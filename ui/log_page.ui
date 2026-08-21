@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LogPage</class>
+ <widget class="QWidget" name="LogPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1200</width><height>720</height></rect></property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="logGroup">
+     <property name="title"><string>运行日志</string></property>
+     <layout class="QVBoxLayout" name="logLayout">
+      <item>
+       <layout class="QHBoxLayout" name="toolbarLayout">
+        <item><widget class="QLabel" name="levelLabel"><property name="text"><string>级别</string></property></widget></item>
+        <item><widget class="QComboBox" name="levelCombo"/></item>
+        <item><widget class="QPushButton" name="addLogButton"><property name="text"><string>添加测试日志</string></property></widget></item>
+        <item><widget class="QPushButton" name="clearLogButton"><property name="text"><string>清空日志</string></property></widget></item>
+        <item><widget class="QPushButton" name="exportLogButton"><property name="text"><string>导出 CSV</string></property></widget></item>
+       </layout>
+      </item>
+      <item><widget class="QTableWidget" name="logTable"/></item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

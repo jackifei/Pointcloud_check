@@ -1,0 +1,16 @@
+detection:
+  confidence: 0.5
+  detection_count: 20
+  spare_1: ''
+  spare_2: ''
+  spare_3: ''
+  enable_1: true
+  enable_2: true
+  enable_3: false
+  enable_4: false
+  enable_5: false
+  function_1: 功能1
+  function_2: 功能2
+  function_3: 功能3
+  function_4: 功能3
+  function_5: 功能5

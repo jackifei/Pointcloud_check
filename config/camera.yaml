@@ -1,0 +1,8 @@
+camera_type: USB 相机
+driver: DirectShow
+camera: ''
+exposure: 6000.0
+gain: 1.0
+frame_rate: 30.0
+trigger: 连续采集
+pixel_format: Mono8

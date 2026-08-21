@@ -1,0 +1,7 @@
+serial_port: COM2
+baud_rate: '115200'
+data_bits: '8'
+stop_bits: '1'
+parity: 无
+modbus_ip: 192.168.1.100
+modbus_port: 502

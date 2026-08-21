@@ -1,0 +1,7 @@
+url: http://mes.example.com/api/report
+api_key: demo-api-key
+selected_messages:
+- 设备状态
+- 检测结果
+- 报警信息
+custom_template: ''

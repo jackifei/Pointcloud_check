@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CameraPage</class>
+ <widget class="QWidget" name="CameraPage">
+  <property name="geometry">
+   <rect><x>0</x><y>0</y><width>1200</width><height>720</height></rect>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="pageHeader">
+     <layout class="QHBoxLayout" name="headerLayout">
+      <item><widget class="QLabel" name="resultLabel"><property name="text"><string>检测结果：--</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSplitter" name="mainSplitter">
+     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+     <widget class="QWidget" name="imageArea">
+      <layout class="QVBoxLayout" name="imageLayout">
+       <item><widget class="QLabel" name="imageLabel"><property name="text"><string>图像显示区</string></property></widget></item>
+       <item>
+        <layout class="QHBoxLayout" name="imageActions">
+         <item><widget class="QPushButton" name="loadImageButton"><property name="text"><string>加载图片</string></property></widget></item>
+         <item><widget class="QPushButton" name="startPreviewButton"><property name="text"><string>开始预览</string></property></widget></item>
+         <item><widget class="QPushButton" name="stopPreviewButton"><property name="text"><string>停止预览</string></property></widget></item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="settingsArea">
+      <layout class="QVBoxLayout" name="settingsLayout">
+       <item>
+        <widget class="QGroupBox" name="cameraControlGroup">
+         <property name="title"><string>相机控制</string></property>
+         <layout class="QFormLayout" name="cameraControlForm">
+          <item row="0" column="0"><widget class="QLabel" name="cameraTypeLabel"><property name="text"><string>相机类型</string></property></widget></item>
+          <item row="0" column="1"><widget class="QComboBox" name="cameraTypeCombo"/></item>
+          <item row="1" column="0"><widget class="QLabel" name="driverLabel"><property name="text"><string>驱动选择</string></property></widget></item>
+          <item row="1" column="1"><widget class="QComboBox" name="driverCombo"/></item>
+          <item row="2" column="0"><widget class="QLabel" name="cameraListLabel"><property name="text"><string>相机列表</string></property></widget></item>
+          <item row="2" column="1"><widget class="QComboBox" name="cameraListCombo"/></item>
+          <item row="3" column="1"><widget class="QPushButton" name="enumerateButton"><property name="text"><string>枚举相机</string></property></widget></item>
+          <item row="4" column="1"><widget class="QPushButton" name="openCameraButton"><property name="text"><string>打开相机</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="paramGroup">
+         <property name="title"><string>参数设置区</string></property>
+         <layout class="QFormLayout" name="paramForm">
+          <item row="0" column="0"><widget class="QLabel" name="exposureLabel"><property name="text"><string>曝光时间</string></property></widget></item>
+          <item row="0" column="1"><widget class="QDoubleSpinBox" name="exposureSpin"/></item>
+          <item row="1" column="0"><widget class="QLabel" name="gainLabel"><property name="text"><string>增益</string></property></widget></item>
+          <item row="1" column="1"><widget class="QDoubleSpinBox" name="gainSpin"/></item>
+         </layout>
+        </widget>
+       </item>
+       <item><widget class="QPushButton" name="saveCameraConfigButton"><property name="text"><string>保存相机配置</string></property></widget></item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

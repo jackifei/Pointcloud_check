@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LogPage</class>
+ <widget class="QWidget" name="LogPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1200</width><height>720</height></rect></property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { background-color: #1e1e1e; color: #d4d4d4; font-family: "Microsoft YaHei", "Segoe UI"; font-size: 13px; }
+QFrame#pageHeader { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 4px; }
+QLabel#pageResult { color: #4ec9b0; font-weight: 600; }
+QLabel#pageTip { color: #9d9d9d; font-size: 12px; }
+QGroupBox { border: 1px solid #3c3c3c; border-radius: 4px; margin-top: 10px; padding-top: 10px; font-weight: 600; }
+QGroupBox::title { subcontrol-origin: margin; left: 8px; padding: 0 4px; color: #dcdcdc; }
+QPushButton { background-color: #333333; border: 1px solid #555555; border-radius: 3px; padding: 6px 12px; color: #d4d4d4; }
+QPushButton:hover { background-color: #3c3c3c; }
+QComboBox { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 3px; padding: 4px 6px; }
+QTableWidget { background-color: #252526; alternate-background-color: #2a2a2b; border: 1px solid #3c3c3c; gridline-color: #3c3c3c; }
+QHeaderView::section { background-color: #333333; color: #d4d4d4; border: none; border-right: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; padding: 6px; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="pageHeader">
+     <layout class="QHBoxLayout" name="headerLayout">
+      <item><widget class="QLabel" name="pageResult"><property name="text"><string>检测结果：已加载演示日志</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="logGroup">
+     <property name="title"><string>运行日志</string></property>
+     <layout class="QVBoxLayout" name="logLayout">
+      <item>
+       <layout class="QHBoxLayout" name="toolbarLayout">
+        <item><widget class="QLabel" name="levelLabel"><property name="text"><string>级别</string></property></widget></item>
+        <item><widget class="QComboBox" name="levelCombo"/></item>
+        <item><widget class="QPushButton" name="addLogButton"><property name="text"><string>添加测试日志</string></property></widget></item>
+        <item><widget class="QPushButton" name="clearLogButton"><property name="text"><string>清空日志</string></property></widget></item>
+        <item><widget class="QPushButton" name="exportLogButton"><property name="text"><string>导出 CSV</string></property></widget></item>
+       </layout>
+      </item>
+      <item>
+       <widget class="QTableWidget" name="logTable">
+        <property name="columnCount"><number>4</number></property>
+        <column><property name="text"><string>时间</string></property></column>
+        <column><property name="text"><string>级别</string></property></column>
+        <column><property name="text"><string>来源</string></property></column>
+        <column><property name="text"><string>消息</string></property></column>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

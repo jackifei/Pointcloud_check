@@ -1,0 +1,25 @@
+language: 简体中文
+log_level: INFO
+auto_save: true
+result_dir: E:/codex_pj/SOP
+data_dir: ''
+counting_mode: day
+shifts:
+- name: 班1
+  start: '16:06'
+  end: '18:00'
+- name: 班2
+  start: 00:00
+  end: 00:00
+- name: 班3
+  start: 00:00
+  end: 00:00
+- name: 班4
+  start: 00:00
+  end: 00:00
+- name: 班5
+  start: 00:00
+  end: 00:00
+- name: 班6
+  start: 00:00
+  end: 00:00

@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FlowPage</class>
+ <widget class="QWidget" name="FlowPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1200</width><height>720</height></rect></property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="roiGroup">
+     <property name="title"><string>ROI 配置区</string></property>
+     <layout class="QVBoxLayout" name="roiLayout">
+      <item><widget class="QWidget" name="roiCanvas"/></item>
+      <item><widget class="QLabel" name="roiHint"><property name="text"><string>点击缩略图可打开大图进行 ROI 创建与编辑。</string></property></widget></item>
+      <item><widget class="QPushButton" name="editRoiButton"><property name="text"><string>编辑 ROI</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="templateGroup">
+     <property name="title"><string>产品模板 / 配方</string></property>
+     <layout class="QVBoxLayout" name="templateLayout">
+      <item>
+       <layout class="QHBoxLayout" name="templateTop">
+        <item><widget class="QLabel" name="templateLabel"><property name="text"><string>当前模板</string></property></widget></item>
+        <item><widget class="QComboBox" name="templateCombo"/></item>
+        <item><widget class="QPushButton" name="newTemplateButton"><property name="text"><string>新建模板</string></property></widget></item>
+        <item><widget class="QPushButton" name="editTemplateButton"><property name="text"><string>编辑模板</string></property></widget></item>
+        <item><widget class="QPushButton" name="deleteTemplateButton"><property name="text"><string>删除模板</string></property></widget></item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="detectParams">
+        <item><widget class="QLabel" name="confidenceLabel"><property name="text"><string>置信度</string></property></widget></item>
+        <item><widget class="QDoubleSpinBox" name="confidenceSpin"/></item>
+        <item><widget class="QLabel" name="countLabel"><property name="text"><string>检测数量</string></property></widget></item>
+        <item><widget class="QSpinBox" name="countSpin"/></item>
+        <item><widget class="QCheckBox" name="useGestureCheck"><property name="text"><string>使用手势</string></property></widget></item>
+        <item><widget class="QComboBox" name="gestureCombo"/></item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSplitter" name="mainSplitter">
+     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+     <widget class="QWidget" name="labelArea">
+      <layout class="QVBoxLayout" name="labelLayout">
+       <item><widget class="QPushButton" name="loadModelButton"><property name="text"><string>加载模型</string></property></widget></item>
+       <item><widget class="QTableWidget" name="labelTable"><property name="columnCount"><number>1</number></property><column><property name="text"><string>标签名称</string></property></column></widget></item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="flowArea">
+      <layout class="QVBoxLayout" name="flowLayout">
+       <item><widget class="QPushButton" name="hideLabelButton"><property name="text"><string>隐藏标签栏</string></property></widget></item>
+       <item><widget class="QTableWidget" name="flowTable"><property name="columnCount"><number>8</number></property><column><property name="text"><string>步骤名称</string></property></column><column><property name="text"><string>使用 ROI</string></property></column><column><property name="text"><string>使用标签</string></property></column><column><property name="text"><string>置信度分数</string></property></column><column><property name="text"><string>检测数量</string></property></column><column><property name="text"><string>使用手势</string></property></column><column><property name="text"><string>手势姿势</string></property></column><column><property name="text"><string>启用</string></property></column></widget></item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

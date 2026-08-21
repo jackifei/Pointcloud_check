@@ -1,0 +1,13 @@
+rois:
+- name: ROI-5
+  shape: rect
+  cx: 209.921875
+  cy: 137.08984375
+  w: 160.0
+  h: 120.0
+  angle: 0.0
+- name: ROI-6
+  shape: circle
+  cx: 189.14453125
+  cy: 326.359375
+  radius: 60.0

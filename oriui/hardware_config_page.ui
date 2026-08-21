@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HardwareConfigPage</class>
+ <widget class="QWidget" name="HardwareConfigPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1200</width><height>760</height></rect></property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { background-color: #1e1e1e; color: #d4d4d4; font-family: "Microsoft YaHei", "Segoe UI"; font-size: 13px; }
+QFrame#pageHeader { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 4px; }
+QLabel#pageResult { color: #4ec9b0; font-weight: 600; }
+QLabel#pageTip { color: #9d9d9d; font-size: 12px; }
+QGroupBox { border: 1px solid #3c3c3c; border-radius: 4px; margin-top: 10px; padding-top: 10px; font-weight: 600; }
+QGroupBox::title { subcontrol-origin: margin; left: 8px; padding: 0 4px; color: #dcdcdc; }
+QPushButton { background-color: #333333; border: 1px solid #555555; border-radius: 3px; padding: 6px 12px; color: #d4d4d4; }
+QPushButton:hover { background-color: #3c3c3c; }
+QPushButton:checked { background-color: #0e639c; border-color: #007acc; color: #ffffff; }
+QComboBox, QLineEdit, QSpinBox { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 3px; padding: 4px 6px; }
+QLabel#inIndicator01, QLabel#inIndicator02, QLabel#inIndicator03, QLabel#inIndicator04, QLabel#inIndicator05, QLabel#inIndicator06, QLabel#inIndicator07, QLabel#inIndicator08, QLabel#inIndicator09, QLabel#inIndicator10, QLabel#inIndicator11, QLabel#inIndicator12, QLabel#inIndicator13, QLabel#inIndicator14, QLabel#inIndicator15, QLabel#inIndicator16 { color: #4ec9b0; font-size: 18px; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="pageHeader">
+     <layout class="QHBoxLayout" name="headerLayout">
+      <item><widget class="QLabel" name="pageResult"><property name="text"><string>检测结果：硬件未连接</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="serialGroup">
+     <property name="title"><string>串口设置</string></property>
+     <layout class="QHBoxLayout" name="serialLayout">
+      <item><widget class="QLabel" name="portLabel"><property name="text"><string>串口</string></property></widget></item>
+      <item><widget class="QComboBox" name="portCombo"/></item>
+      <item><widget class="QPushButton" name="serialButton"><property name="text"><string>打开串口</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+      <item><widget class="QLabel" name="baudLabel"><property name="text"><string>波特率</string></property></widget></item>
+      <item><widget class="QLabel" name="baudValue"><property name="text"><string>115200</string></property></widget></item>
+      <item><widget class="QLabel" name="dataBitsLabel"><property name="text"><string>数据位</string></property></widget></item>
+      <item><widget class="QLabel" name="dataBitsValue"><property name="text"><string>8</string></property></widget></item>
+      <item><widget class="QLabel" name="stopBitsLabel"><property name="text"><string>停止位</string></property></widget></item>
+      <item><widget class="QLabel" name="stopBitsValue"><property name="text"><string>1</string></property></widget></item>
+      <item><widget class="QLabel" name="parityLabel"><property name="text"><string>校验位</string></property></widget></item>
+      <item><widget class="QLabel" name="parityValue"><property name="text"><string>无</string></property></widget></item>
+      <item><widget class="QPushButton" name="saveHardwareButton"><property name="text"><string>保存硬件配置</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="ioGroup">
+     <property name="title"><string>IO 控制（ModbusTCP）</string></property>
+     <layout class="QVBoxLayout" name="ioLayout">
+      <item>
+       <layout class="QHBoxLayout" name="modbusRow">
+        <item><widget class="QLabel" name="modbusIpLabel"><property name="text"><string>ModbusTCP 地址</string></property></widget></item>
+        <item><widget class="QLineEdit" name="ipEdit"><property name="text"><string>192.168.1.100</string></property></widget></item>
+        <item><widget class="QLabel" name="modbusPortLabel"><property name="text"><string>端口</string></property></widget></item>
+        <item><widget class="QSpinBox" name="portSpin"><property name="value"><number>502</number></property></widget></item>
+        <item><widget class="QPushButton" name="modbusButton"><property name="text"><string>连接 ModbusTCP</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+       </layout>
+      </item>
+      <item>
+       <layout class="QHBoxLayout" name="ioColumns">
+        <item>
+         <widget class="QGroupBox" name="inputGroup">
+          <property name="title"><string>输入状态（16 路）</string></property>
+          <layout class="QGridLayout" name="inputGrid">
+           <item row="0" column="0"><widget class="QLabel" name="inIndicator01"><property name="text"><string>●</string></property></widget></item>
+           <item row="0" column="1"><widget class="QLabel" name="inName01"><property name="text"><string>IN01</string></property></widget></item>
+           <item row="0" column="2"><widget class="QLabel" name="inIndicator02"><property name="text"><string>●</string></property></widget></item>
+           <item row="0" column="3"><widget class="QLabel" name="inName02"><property name="text"><string>IN02</string></property></widget></item>
+           <item row="0" column="4"><widget class="QLabel" name="inIndicator03"><property name="text"><string>●</string></property></widget></item>
+           <item row="0" column="5"><widget class="QLabel" name="inName03"><property name="text"><string>IN03</string></property></widget></item>
+           <item row="0" column="6"><widget class="QLabel" name="inIndicator04"><property name="text"><string>●</string></property></widget></item>
+           <item row="0" column="7"><widget class="QLabel" name="inName04"><property name="text"><string>IN04</string></property></widget></item>
+           <item row="1" column="0"><widget class="QLabel" name="inIndicator05"><property name="text"><string>●</string></property></widget></item>
+           <item row="1" column="1"><widget class="QLabel" name="inName05"><property name="text"><string>IN05</string></property></widget></item>
+           <item row="1" column="2"><widget class="QLabel" name="inIndicator06"><property name="text"><string>●</string></property></widget></item>
+           <item row="1" column="3"><widget class="QLabel" name="inName06"><property name="text"><string>IN06</string></property></widget></item>
+           <item row="1" column="4"><widget class="QLabel" name="inIndicator07"><property name="text"><string>●</string></property></widget></item>
+           <item row="1" column="5"><widget class="QLabel" name="inName07"><property name="text"><string>IN07</string></property></widget></item>
+           <item row="1" column="6"><widget class="QLabel" name="inIndicator08"><property name="text"><string>●</string></property></widget></item>
+           <item row="1" column="7"><widget class="QLabel" name="inName08"><property name="text"><string>IN08</string></property></widget></item>
+           <item row="2" column="0"><widget class="QLabel" name="inIndicator09"><property name="text"><string>●</string></property></widget></item>
+           <item row="2" column="1"><widget class="QLabel" name="inName09"><property name="text"><string>IN09</string></property></widget></item>
+           <item row="2" column="2"><widget class="QLabel" name="inIndicator10"><property name="text"><string>●</string></property></widget></item>
+           <item row="2" column="3"><widget class="QLabel" name="inName10"><property name="text"><string>IN10</string></property></widget></item>
+           <item row="2" column="4"><widget class="QLabel" name="inIndicator11"><property name="text"><string>●</string></property></widget></item>
+           <item row="2" column="5"><widget class="QLabel" name="inName11"><property name="text"><string>IN11</string></property></widget></item>
+           <item row="2" column="6"><widget class="QLabel" name="inIndicator12"><property name="text"><string>●</string></property></widget></item>
+           <item row="2" column="7"><widget class="QLabel" name="inName12"><property name="text"><string>IN12</string></property></widget></item>
+           <item row="3" column="0"><widget class="QLabel" name="inIndicator13"><property name="text"><string>●</string></property></widget></item>
+           <item row="3" column="1"><widget class="QLabel" name="inName13"><property name="text"><string>IN13</string></property></widget></item>
+           <item row="3" column="2"><widget class="QLabel" name="inIndicator14"><property name="text"><string>●</string></property></widget></item>
+           <item row="3" column="3"><widget class="QLabel" name="inName14"><property name="text"><string>IN14</string></property></widget></item>
+           <item row="3" column="4"><widget class="QLabel" name="inIndicator15"><property name="text"><string>●</string></property></widget></item>
+           <item row="3" column="5"><widget class="QLabel" name="inName15"><property name="text"><string>IN15</string></property></widget></item>
+           <item row="3" column="6"><widget class="QLabel" name="inIndicator16"><property name="text"><string>●</string></property></widget></item>
+           <item row="3" column="7"><widget class="QLabel" name="inName16"><property name="text"><string>IN16</string></property></widget></item>
+          </layout>
+         </widget>
+        </item>
+        <item>
+         <widget class="QGroupBox" name="outputGroup">
+          <property name="title"><string>输出控制（16 路）</string></property>
+          <layout class="QGridLayout" name="outputGrid">
+           <item row="0" column="0"><widget class="QPushButton" name="out01"><property name="text"><string>OUT01</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="0" column="1"><widget class="QPushButton" name="out02"><property name="text"><string>OUT02</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="0" column="2"><widget class="QPushButton" name="out03"><property name="text"><string>OUT03</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="0" column="3"><widget class="QPushButton" name="out04"><property name="text"><string>OUT04</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="1" column="0"><widget class="QPushButton" name="out05"><property name="text"><string>OUT05</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="1" column="1"><widget class="QPushButton" name="out06"><property name="text"><string>OUT06</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="1" column="2"><widget class="QPushButton" name="out07"><property name="text"><string>OUT07</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="1" column="3"><widget class="QPushButton" name="out08"><property name="text"><string>OUT08</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="2" column="0"><widget class="QPushButton" name="out09"><property name="text"><string>OUT09</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="2" column="1"><widget class="QPushButton" name="out10"><property name="text"><string>OUT10</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="2" column="2"><widget class="QPushButton" name="out11"><property name="text"><string>OUT11</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="2" column="3"><widget class="QPushButton" name="out12"><property name="text"><string>OUT12</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="3" column="0"><widget class="QPushButton" name="out13"><property name="text"><string>OUT13</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="3" column="1"><widget class="QPushButton" name="out14"><property name="text"><string>OUT14</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="3" column="2"><widget class="QPushButton" name="out15"><property name="text"><string>OUT15</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+           <item row="3" column="3"><widget class="QPushButton" name="out16"><property name="text"><string>OUT16</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+          </layout>
+         </widget>
+        </item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

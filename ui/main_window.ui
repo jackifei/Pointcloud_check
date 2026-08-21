@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MainWindow</class>
+ <widget class="QMainWindow" name="MainWindow">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1440</width><height>860</height></rect></property>
+  <widget class="QWidget" name="centralWidget">
+   <layout class="QVBoxLayout" name="rootLayout">
+    <property name="spacing"><number>0</number></property>
+    <property name="leftMargin"><number>0</number></property>
+    <property name="topMargin"><number>0</number></property>
+    <property name="rightMargin"><number>0</number></property>
+    <property name="bottomMargin"><number>0</number></property>
+    <item>
+     <widget class="QFrame" name="navBar">
+      <layout class="QHBoxLayout" name="navLayout">
+       <item><widget class="QLabel" name="appTitle"><property name="text"><string>SOP</string></property></widget></item>
+       <item><widget class="QPushButton" name="cameraButton"><property name="text"><string>相机管理</string></property></widget></item>
+       <item><widget class="QPushButton" name="dashboardButton"><property name="text"><string>运行看板</string></property></widget></item>
+       <item><widget class="QPushButton" name="flowButton"><property name="text"><string>流程编辑</string></property></widget></item>
+       <item><widget class="QPushButton" name="hardwareButton"><property name="text"><string>硬件配置</string></property></widget></item>
+       <item><widget class="QPushButton" name="resultButton"><property name="text"><string>结果查询</string></property></widget></item>
+       <item><widget class="QPushButton" name="mesButton"><property name="text"><string>MES对接</string></property></widget></item>
+       <item><widget class="QPushButton" name="logButton"><property name="text"><string>日志</string></property></widget></item>
+       <item><widget class="QPushButton" name="paramButton"><property name="text"><string>参数</string></property></widget></item>
+       <item><widget class="QPushButton" name="personnelButton"><property name="text"><string>人员管理</string></property></widget></item>
+       <item><widget class="QLabel" name="navTip"><property name="text"><string>操作提示：--</string></property></widget></item>
+       <item><widget class="QPushButton" name="helpButton"><property name="text"><string>帮助</string></property></widget></item>
+      </layout>
+     </widget>
+    </item>
+    <item><widget class="QStackedWidget" name="stackedWidget"/></item>
+    <item><widget class="QFrame" name="statusBar"/></item>
+   </layout>
+  </widget>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

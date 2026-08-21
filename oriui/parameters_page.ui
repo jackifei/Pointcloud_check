@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ParametersPage</class>
+ <widget class="QWidget" name="ParametersPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>900</width><height>720</height></rect></property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { background-color: #1e1e1e; color: #d4d4d4; font-family: "Microsoft YaHei", "Segoe UI"; font-size: 13px; }
+QFrame#pageHeader { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 4px; }
+QLabel#pageResult { color: #4ec9b0; font-weight: 600; }
+QGroupBox { border: 1px solid #3c3c3c; border-radius: 4px; margin-top: 10px; padding-top: 10px; font-weight: 600; }
+QGroupBox::title { subcontrol-origin: margin; left: 8px; padding: 0 4px; color: #dcdcdc; }
+QComboBox { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 3px; padding: 4px 6px; }
+QPushButton { background-color: #333333; border: 1px solid #555555; border-radius: 3px; padding: 6px 12px; color: #d4d4d4; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="pageHeader">
+     <layout class="QHBoxLayout" name="headerLayout">
+      <item><widget class="QLabel" name="pageResult"><property name="text"><string>检测结果：系统参数已加载</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QScrollArea" name="scrollArea">
+     <property name="widgetResizable"><bool>true</bool></property>
+     <widget class="QWidget" name="scrollContent">
+      <layout class="QVBoxLayout" name="contentLayout">
+       <item>
+        <widget class="QGroupBox" name="systemGroup">
+         <property name="title"><string>系统参数</string></property>
+         <layout class="QFormLayout" name="systemForm">
+          <item row="0" column="0"><widget class="QLabel" name="languageLabel"><property name="text"><string>界面语言</string></property></widget></item>
+          <item row="0" column="1"><widget class="QComboBox" name="languageCombo"/></item>
+          <item row="1" column="0"><widget class="QLabel" name="logLevelLabel"><property name="text"><string>日志级别</string></property></widget></item>
+          <item row="1" column="1"><widget class="QComboBox" name="logLevelCombo"/></item>
+          <item row="2" column="1"><widget class="QCheckBox" name="autoSaveCheck"><property name="text"><string>启用自动保存</string></property></widget></item>
+         </layout>
+        </widget>
+       </item>
+       <item><widget class="QPushButton" name="saveSystemButton"><property name="text"><string>保存系统参数</string></property></widget></item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

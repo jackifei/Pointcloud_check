@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ResultQueryPage</class>
+ <widget class="QWidget" name="ResultQueryPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1200</width><height>720</height></rect></property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="filterGroup">
+     <property name="title"><string>查询条件</string></property>
+     <layout class="QHBoxLayout" name="filterLayout">
+      <item><widget class="QLabel" name="startLabel"><property name="text"><string>开始时间</string></property></widget></item>
+      <item><widget class="QDateTimeEdit" name="startEdit"/></item>
+      <item><widget class="QLabel" name="endLabel"><property name="text"><string>结束时间</string></property></widget></item>
+      <item><widget class="QDateTimeEdit" name="endEdit"/></item>
+      <item><widget class="QComboBox" name="statusCombo"/></item>
+      <item><widget class="QPushButton" name="searchButton"><property name="text"><string>查询</string></property></widget></item>
+      <item><widget class="QPushButton" name="resetButton"><property name="text"><string>重置</string></property></widget></item>
+      <item><widget class="QPushButton" name="exportButton"><property name="text"><string>导出 CSV</string></property></widget></item>
+      <item><widget class="QPushButton" name="saveFilterButton"><property name="text"><string>保存条件</string></property></widget></item>
+      <item><widget class="QLabel" name="summaryLabel"><property name="text"><string>汇总：--</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="resultGroup">
+     <property name="title"><string>检测记录</string></property>
+     <layout class="QVBoxLayout" name="resultLayout">
+      <item>
+       <widget class="QSplitter" name="detailSplitter">
+        <property name="orientation"><enum>Qt::Vertical</enum></property>
+        <widget class="QTableWidget" name="resultTable"/>
+        <widget class="QPlainTextEdit" name="detailEdit"/>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

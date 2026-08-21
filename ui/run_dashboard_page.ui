@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RunDashboardPage</class>
+ <widget class="QWidget" name="RunDashboardPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1360</width><height>820</height></rect></property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="pageHeader">
+     <layout class="QHBoxLayout" name="headerLayout">
+      <item><widget class="QLabel" name="pageResult"><property name="text"><string>检测结果：--</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="templateGroup">
+     <property name="title"><string>看板状态</string></property>
+     <layout class="QHBoxLayout" name="templateLayout">
+      <item><widget class="QLabel" name="templateLabel"><property name="text"><string>当前模板</string></property></widget></item>
+      <item><widget class="QComboBox" name="templateCombo"/></item>
+      <item><widget class="QPushButton" name="refreshButton"><property name="text"><string>刷新看板</string></property></widget></item>
+      <item><widget class="QPushButton" name="fullBoardButton"><property name="text"><string>打开完整看板状态</string></property></widget></item>
+      <item><spacer name="templateSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="statsRow">
+     <item>
+      <widget class="QFrame" name="okCard">
+       <layout class="QVBoxLayout" name="okLayout">
+        <item><widget class="QLabel" name="okTitle"><property name="text"><string>OK 数量</string></property></widget></item>
+        <item><widget class="QLabel" name="okValue"><property name="text"><string>--</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="ngCard">
+       <layout class="QVBoxLayout" name="ngLayout">
+        <item><widget class="QLabel" name="ngTitle"><property name="text"><string>NG 数量</string></property></widget></item>
+        <item><widget class="QLabel" name="ngValue"><property name="text"><string>--</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="todayCard">
+       <layout class="QVBoxLayout" name="todayLayout">
+        <item><widget class="QLabel" name="todayTitle"><property name="text"><string>今日统计</string></property></widget></item>
+        <item><widget class="QLabel" name="todayValue"><property name="text"><string>--</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="weekCard">
+       <layout class="QVBoxLayout" name="weekLayout">
+        <item><widget class="QLabel" name="weekTitle"><property name="text"><string>本周统计</string></property></widget></item>
+        <item><widget class="QLabel" name="weekValue"><property name="text"><string>--</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="monthCard">
+       <layout class="QVBoxLayout" name="monthLayout">
+        <item><widget class="QLabel" name="monthTitle"><property name="text"><string>本月统计</string></property></widget></item>
+        <item><widget class="QLabel" name="monthValue"><property name="text"><string>--</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="rateCard">
+       <layout class="QVBoxLayout" name="rateLayout">
+        <item><widget class="QLabel" name="rateTitle"><property name="text"><string>OK 完成率</string></property></widget></item>
+        <item><widget class="QLabel" name="rateValue"><property name="text"><string>--</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QSplitter" name="mainSplitter">
+     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+     <widget class="QGroupBox" name="cameraGroup">
+      <property name="title"><string>相机图像显示区</string></property>
+      <layout class="QVBoxLayout" name="cameraLayout">
+       <item><widget class="QWidget" name="cameraView"/></item>
+       <item><widget class="QLabel" name="roiLabel"><property name="text"><string>ROI：--</string></property></widget></item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="stepGroup">
+      <property name="title"><string>流程步骤状态</string></property>
+      <layout class="QVBoxLayout" name="stepLayout">
+       <item><widget class="QLabel" name="stepHint"><property name="text"><string>显示当前模板对应的检测流程简要内容。</string></property></widget></item>
+       <item><widget class="QTableWidget" name="stepTable"><property name="columnCount"><number>5</number></property><column><property name="text"><string>步骤</string></property></column><column><property name="text"><string>使用 ROI / 标签</string></property></column><column><property name="text"><string>状态</string></property></column><column><property name="text"><string>耗时</string></property></column><column><property name="text"><string>缩略图</string></property></column></widget></item>
+       <item>
+        <layout class="QHBoxLayout" name="stepActions">
+         <item><widget class="QPushButton" name="resetFaultButton"><property name="text"><string>复位故障</string></property></widget></item>
+         <item><widget class="QPushButton" name="skipStepButton"><property name="text"><string>跳过当前步骤</string></property></widget></item>
+        </layout>
+       </item>
+       <item><widget class="QLabel" name="stepSummary"><property name="text"><string>步骤状态：--</string></property></widget></item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="fullStatusGroup">
+     <property name="title"><string>完整看板状态</string></property>
+     <layout class="QHBoxLayout" name="fullStatusLayout">
+      <item><widget class="QLabel" name="runtimeLabel"><property name="text"><string>运行时长：--</string></property></widget></item>
+      <item><widget class="QLabel" name="shiftOutputLabel"><property name="text"><string>当班产量：--</string></property></widget></item>
+      <item><widget class="QLabel" name="averageCycleLabel"><property name="text"><string>平均节拍：--</string></property></widget></item>
+      <item><widget class="QLabel" name="deviceStateLabel"><property name="text"><string>设备状态：--</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,9 @@
+detection:
+  confidence: 0.65
+  detection_count: 20
+  enable_1: false
+  enable_2: false
+  enable_3: false
+  enable_4: false
+  enable_5: false
+  function: 功能选择1

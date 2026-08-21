@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>ResultQueryPage</class>
+ <widget class="QWidget" name="ResultQueryPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1280</width><height>760</height></rect></property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { background-color: #1e1e1e; color: #d4d4d4; font-family: "Microsoft YaHei", "Segoe UI"; font-size: 13px; }
+QFrame#pageHeader { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 4px; }
+QLabel#pageResult { color: #4ec9b0; font-weight: 600; }
+QLabel#pageTip { color: #9d9d9d; font-size: 12px; }
+QGroupBox { border: 1px solid #3c3c3c; border-radius: 4px; margin-top: 10px; padding-top: 10px; font-weight: 600; }
+QGroupBox::title { subcontrol-origin: margin; left: 8px; padding: 0 4px; color: #dcdcdc; }
+QPushButton { background-color: #333333; border: 1px solid #555555; border-radius: 3px; padding: 6px 12px; color: #d4d4d4; }
+QPushButton:hover { background-color: #3c3c3c; }
+QComboBox, QDateTimeEdit, QPlainTextEdit { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 3px; padding: 4px 6px; }
+QTableWidget { background-color: #252526; alternate-background-color: #2a2a2b; border: 1px solid #3c3c3c; gridline-color: #3c3c3c; }
+QHeaderView::section { background-color: #333333; color: #d4d4d4; border: none; border-right: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; padding: 6px; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="pageHeader">
+     <layout class="QHBoxLayout" name="headerLayout">
+      <item><widget class="QLabel" name="pageResult"><property name="text"><string>检测结果：当前显示 5 条记录，报警 2 条</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="filterGroup">
+     <property name="title"><string>查询条件</string></property>
+     <layout class="QVBoxLayout" name="filterLayout">
+      <item>
+       <layout class="QHBoxLayout" name="filterTop">
+        <item><widget class="QLabel" name="startLabel"><property name="text"><string>开始时间</string></property></widget></item>
+        <item><widget class="QDateTimeEdit" name="startEdit"><property name="calendarPopup"><bool>true</bool></property><property name="displayFormat"><string>yyyy-MM-dd HH:mm:ss</string></property></widget></item>
+        <item><widget class="QLabel" name="endLabel"><property name="text"><string>结束时间</string></property></widget></item>
+        <item><widget class="QDateTimeEdit" name="endEdit"><property name="calendarPopup"><bool>true</bool></property><property name="displayFormat"><string>yyyy-MM-dd HH:mm:ss</string></property></widget></item>
+        <item><widget class="QLabel" name="productLabel"><property name="text"><string>产品/模板</string></property></widget></item>
+        <item><widget class="QComboBox" name="productCombo"/></item>
+        <item><widget class="QLabel" name="statusLabel"><property name="text"><string>完成状态</string></property></widget></item>
+        <item><widget class="QComboBox" name="statusCombo"/></item>
+        <item><widget class="QLabel" name="alarmLabel"><property name="text"><string>报警</string></property></widget></item>
+        <item><widget class="QComboBox" name="alarmCombo"/></item>
+        <item><widget class="QPushButton" name="searchButton"><property name="text"><string>查询</string></property></widget></item>
+        <item><widget class="QPushButton" name="resetButton"><property name="text"><string>重置</string></property></widget></item>
+        <item><widget class="QPushButton" name="exportButton"><property name="text"><string>导出 CSV</string></property></widget></item>
+        <item><widget class="QPushButton" name="saveFilterButton"><property name="text"><string>保存条件</string></property></widget></item>
+        <item><widget class="QLabel" name="summaryLabel"><property name="text"><string>汇总：总数 5，完成 4，报警 2</string></property></widget></item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="resultGroup">
+     <property name="title"><string>检测记录</string></property>
+     <layout class="QVBoxLayout" name="resultLayout">
+      <item>
+       <widget class="QSplitter" name="detailSplitter">
+        <property name="orientation"><enum>Qt::Vertical</enum></property>
+        <widget class="QTableWidget" name="resultTable">
+         <property name="columnCount"><number>7</number></property>
+         <column><property name="text"><string>检测时间</string></property></column>
+         <column><property name="text"><string>产品/模板</string></property></column>
+         <column><property name="text"><string>批次号</string></property></column>
+         <column><property name="text"><string>完成状态</string></property></column>
+         <column><property name="text"><string>检测结果</string></property></column>
+         <column><property name="text"><string>提示信息</string></property></column>
+         <column><property name="text"><string>报警信息</string></property></column>
+        </widget>
+        <widget class="QPlainTextEdit" name="detailEdit"><property name="placeholderText"><string>选中一条记录后，这里显示详细检测信息。</string></property></widget>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

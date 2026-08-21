@@ -1,0 +1,23 @@
+name: '3333'
+model_file: ''
+rois:
+- name: ROI-1
+  x: 50
+  y: 45
+  w: 200
+  h: 150
+- name: ROI-2
+  x: 330
+  y: 90
+  w: 220
+  h: 160
+detection:
+  confidence: 0.65
+  detection_count: 20
+  enable_1: false
+  enable_2: false
+  enable_3: false
+  enable_4: false
+  enable_5: false
+  function: 功能选择1
+other_params: []

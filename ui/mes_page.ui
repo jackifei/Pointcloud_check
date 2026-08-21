@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MesPage</class>
+ <widget class="QWidget" name="MesPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1200</width><height>720</height></rect></property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="connectionGroup">
+     <property name="title"><string>MES 服务配置</string></property>
+     <layout class="QFormLayout" name="connectionForm">
+      <item row="0" column="0"><widget class="QLabel" name="urlLabel"><property name="text"><string>上报地址</string></property></widget></item>
+      <item row="0" column="1"><widget class="QLineEdit" name="urlEdit"/></item>
+      <item row="1" column="0"><widget class="QLabel" name="apiKeyLabel"><property name="text"><string>API Key</string></property></widget></item>
+      <item row="1" column="1"><widget class="QLineEdit" name="apiKeyEdit"/></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSplitter" name="mainSplitter">
+     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+     <widget class="QGroupBox" name="messageGroup">
+      <property name="title"><string>选择上报报文</string></property>
+      <layout class="QVBoxLayout" name="messageLayout">
+       <item><widget class="QListWidget" name="messageList"/></item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="customGroup">
+      <property name="title"><string>自定义报文模板</string></property>
+      <layout class="QVBoxLayout" name="customLayout">
+       <item><widget class="QPlainTextEdit" name="templateEdit"/></item>
+       <item><widget class="QPushButton" name="sendTestButton"><property name="text"><string>发送测试报文</string></property></widget></item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

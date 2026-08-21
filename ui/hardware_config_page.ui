@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>HardwareConfigPage</class>
+ <widget class="QWidget" name="HardwareConfigPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1200</width><height>720</height></rect></property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="serialGroup">
+     <property name="title"><string>串口设置</string></property>
+     <layout class="QHBoxLayout" name="serialLayout">
+      <item><widget class="QLabel" name="portLabel"><property name="text"><string>串口</string></property></widget></item>
+      <item><widget class="QComboBox" name="portCombo"/></item>
+      <item><widget class="QPushButton" name="serialButton"><property name="text"><string>打开串口</string></property></widget></item>
+      <item><widget class="QLabel" name="baudLabel"><property name="text"><string>波特率</string></property></widget></item>
+      <item><widget class="QLabel" name="baudValue"><property name="text"><string>115200</string></property></widget></item>
+      <item><widget class="QLabel" name="dataBitsLabel"><property name="text"><string>数据位</string></property></widget></item>
+      <item><widget class="QLabel" name="dataBitsValue"><property name="text"><string>8</string></property></widget></item>
+      <item><widget class="QLabel" name="stopBitsLabel"><property name="text"><string>停止位</string></property></widget></item>
+      <item><widget class="QLabel" name="stopBitsValue"><property name="text"><string>1</string></property></widget></item>
+      <item><widget class="QLabel" name="parityLabel"><property name="text"><string>校验位</string></property></widget></item>
+      <item><widget class="QLabel" name="parityValue"><property name="text"><string>无</string></property></widget></item>
+      <item><widget class="QPushButton" name="saveHardwareButton"><property name="text"><string>保存硬件配置</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="ioGroup">
+     <property name="title"><string>IO 控制（ModbusTCP）</string></property>
+     <layout class="QHBoxLayout" name="ioLayout">
+      <item>
+       <widget class="QGroupBox" name="inputGroup">
+        <property name="title"><string>输入状态（16 路）</string></property>
+        <layout class="QGridLayout" name="inputGrid"/>
+       </widget>
+      </item>
+      <item>
+       <widget class="QGroupBox" name="outputGroup">
+        <property name="title"><string>输出控制（16 路）</string></property>
+        <layout class="QGridLayout" name="outputGrid"/>
+       </widget>
+      </item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

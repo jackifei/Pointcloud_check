@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>PersonnelPage</class>
+ <widget class="QWidget" name="PersonnelPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1200</width><height>720</height></rect></property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QGroupBox" name="personnelGroup">
+     <property name="title"><string>人员列表</string></property>
+     <layout class="QVBoxLayout" name="personnelLayout">
+      <item>
+       <layout class="QHBoxLayout" name="toolbarLayout">
+        <item><widget class="QPushButton" name="addButton"><property name="text"><string>新增</string></property></widget></item>
+        <item><widget class="QPushButton" name="editButton"><property name="text"><string>编辑</string></property></widget></item>
+        <item><widget class="QPushButton" name="deleteButton"><property name="text"><string>删除</string></property></widget></item>
+       </layout>
+      </item>
+      <item><widget class="QTableWidget" name="personnelTable"/></item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

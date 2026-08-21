@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>RunDashboardPage</class>
+ <widget class="QWidget" name="RunDashboardPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1360</width><height>820</height></rect></property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { background-color: #1e1e1e; color: #d4d4d4; font-family: "Microsoft YaHei", "Segoe UI"; font-size: 13px; }
+QFrame#pageHeader { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 4px; }
+QLabel#pageResult { color: #4ec9b0; font-weight: 600; }
+QLabel#pageTip { color: #9d9d9d; font-size: 12px; }
+QGroupBox { border: 1px solid #3c3c3c; border-radius: 4px; margin-top: 10px; padding-top: 10px; font-weight: 600; }
+QGroupBox::title { subcontrol-origin: margin; left: 8px; padding: 0 4px; color: #dcdcdc; }
+QPushButton { background-color: #333333; border: 1px solid #555555; border-radius: 3px; padding: 6px 12px; color: #d4d4d4; }
+QPushButton:hover { background-color: #3c3c3c; }
+QComboBox { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 3px; padding: 4px 6px; }
+QFrame#statCard { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 6px; }
+QLabel#statCardTitle { color: #9d9d9d; font-size: 12px; }
+QLabel#statCardValue { color: #ffffff; font-size: 24px; font-weight: 700; }
+QTableWidget { background-color: #252526; alternate-background-color: #2a2a2b; border: 1px solid #3c3c3c; gridline-color: #3c3c3c; }
+QHeaderView::section { background-color: #333333; color: #d4d4d4; border: none; border-right: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; padding: 6px; }
+QSplitter::handle { background-color: #3c3c3c; }
+QSplitter::handle:horizontal { width: 5px; }
+QWidget#cameraView { background-color: #111111; border: 1px solid #3c3c3c; border-radius: 4px; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="pageHeader">
+     <layout class="QHBoxLayout" name="headerLayout">
+      <item><widget class="QLabel" name="pageResult"><property name="text"><string>检测结果：OK 1236，NG 42，OK 完成率 96.7%</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="templateGroup">
+     <property name="title"><string>看板状态</string></property>
+     <layout class="QHBoxLayout" name="templateLayout">
+      <item><widget class="QLabel" name="templateLabel"><property name="text"><string>当前模板</string></property></widget></item>
+      <item><widget class="QComboBox" name="templateCombo"/></item>
+      <item><widget class="QPushButton" name="refreshButton"><property name="text"><string>刷新看板</string></property></widget></item>
+      <item><widget class="QPushButton" name="fullBoardButton"><property name="text"><string>收起完整看板状态</string></property></widget></item>
+      <item><spacer name="templateSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="statsRow">
+     <item>
+      <widget class="QFrame" name="statCard">
+       <layout class="QVBoxLayout" name="okLayout">
+        <item><widget class="QLabel" name="statCardTitle"><property name="text"><string>OK 数量</string></property></widget></item>
+        <item><widget class="QLabel" name="statCardValue"><property name="text"><string>1236</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="statCard">
+       <layout class="QVBoxLayout" name="ngLayout">
+        <item><widget class="QLabel" name="statCardTitle"><property name="text"><string>NG 数量</string></property></widget></item>
+        <item><widget class="QLabel" name="statCardValue"><property name="text"><string>42</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="statCard">
+       <layout class="QVBoxLayout" name="todayLayout">
+        <item><widget class="QLabel" name="statCardTitle"><property name="text"><string>今日统计</string></property></widget></item>
+        <item><widget class="QLabel" name="statCardValue"><property name="text"><string>87</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="statCard">
+       <layout class="QVBoxLayout" name="weekLayout">
+        <item><widget class="QLabel" name="statCardTitle"><property name="text"><string>本周统计</string></property></widget></item>
+        <item><widget class="QLabel" name="statCardValue"><property name="text"><string>512</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="statCard">
+       <layout class="QVBoxLayout" name="monthLayout">
+        <item><widget class="QLabel" name="statCardTitle"><property name="text"><string>本月统计</string></property></widget></item>
+        <item><widget class="QLabel" name="statCardValue"><property name="text"><string>2018</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QFrame" name="statCard">
+       <layout class="QVBoxLayout" name="rateLayout">
+        <item><widget class="QLabel" name="statCardTitle"><property name="text"><string>OK 完成率</string></property></widget></item>
+        <item><widget class="QLabel" name="statCardValue"><property name="text"><string>96.7%</string></property></widget></item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QSplitter" name="mainSplitter">
+     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+     <widget class="QGroupBox" name="cameraGroup">
+      <property name="title"><string>相机图像显示区</string></property>
+      <layout class="QVBoxLayout" name="cameraLayout">
+       <item><widget class="QWidget" name="cameraView"/></item>
+       <item><widget class="QLabel" name="roiLabel"><property name="text"><string>ROI：ROI-1、ROI-2</string></property></widget></item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="stepGroup">
+      <property name="title"><string>流程步骤状态</string></property>
+      <layout class="QVBoxLayout" name="stepLayout">
+       <item><widget class="QLabel" name="stepHint"><property name="text"><string>显示当前模板对应的检测流程简要内容。</string></property></widget></item>
+       <item>
+        <widget class="QTableWidget" name="stepTable">
+        <property name="columnCount"><number>5</number></property>
+         <column><property name="text"><string>步骤</string></property></column>
+         <column><property name="text"><string>使用 ROI / 标签</string></property></column>
+         <column><property name="text"><string>状态</string></property></column>
+         <column><property name="text"><string>耗时</string></property></column>
+         <column><property name="text"><string>缩略图</string></property></column>
+        </widget>
+       </item>
+       <item>
+        <layout class="QHBoxLayout" name="stepActions">
+         <item><widget class="QPushButton" name="resetFaultButton"><property name="text"><string>复位故障</string></property></widget></item>
+         <item><widget class="QPushButton" name="skipStepButton"><property name="text"><string>跳过当前步骤</string></property></widget></item>
+        </layout>
+       </item>
+       <item><widget class="QLabel" name="stepSummary"><property name="text"><string>步骤状态：共 4 步，已完成 1 步</string></property></widget></item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="fullStatusGroup">
+     <property name="title"><string>完整看板状态</string></property>
+     <layout class="QHBoxLayout" name="fullStatusLayout">
+      <item><widget class="QLabel" name="runtimeLabel"><property name="text"><string>运行时长：08:26:17</string></property></widget></item>
+      <item><widget class="QLabel" name="shiftOutputLabel"><property name="text"><string>当班产量：342</string></property></widget></item>
+      <item><widget class="QLabel" name="averageCycleLabel"><property name="text"><string>平均节拍：2.38 s</string></property></widget></item>
+      <item><widget class="QLabel" name="deviceStateLabel"><property name="text"><string>设备状态：运行中</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

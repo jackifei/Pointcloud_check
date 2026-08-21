@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>FlowPage</class>
+ <widget class="QWidget" name="FlowPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1280</width><height>760</height></rect></property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { background-color: #1e1e1e; color: #d4d4d4; font-family: "Microsoft YaHei", "Segoe UI"; font-size: 13px; }
+QFrame#pageHeader { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 4px; }
+QLabel#pageResult { color: #4ec9b0; font-weight: 600; }
+QLabel#pageTip { color: #9d9d9d; font-size: 12px; }
+QGroupBox { border: 1px solid #3c3c3c; border-radius: 4px; margin-top: 10px; padding-top: 10px; font-weight: 600; }
+QGroupBox::title { subcontrol-origin: margin; left: 8px; padding: 0 4px; color: #dcdcdc; }
+QPushButton { background-color: #333333; border: 1px solid #555555; border-radius: 3px; padding: 6px 12px; color: #d4d4d4; }
+QPushButton:hover { background-color: #3c3c3c; }
+QPushButton:checked { background-color: #0e639c; border-color: #007acc; color: #ffffff; }
+QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QSpinBox, QDoubleSpinBox { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 3px; padding: 4px 6px; }
+QTableWidget, QTableView { background-color: #252526; alternate-background-color: #2a2a2b; border: 1px solid #3c3c3c; gridline-color: #3c3c3c; }
+QHeaderView::section { background-color: #333333; color: #d4d4d4; border: none; border-right: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; padding: 6px; }
+QSplitter::handle { background-color: #3c3c3c; }
+QSplitter::handle:horizontal { width: 5px; }
+QWidget#roiCanvas { background-color: #111111; border: 1px solid #3c3c3c; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="pageHeader">
+     <layout class="QHBoxLayout" name="headerLayout">
+      <item><widget class="QLabel" name="pageResult"><property name="text"><string>检测结果：模板「默认产品A」已加载</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="roiGroup">
+     <property name="title"><string>ROI 配置区</string></property>
+     <layout class="QVBoxLayout" name="roiLayout">
+      <item><widget class="QWidget" name="roiCanvas"/></item>
+      <item><widget class="QLabel" name="roiHint"><property name="text"><string>点击缩略图可打开大图进行 ROI 创建与编辑。</string></property></widget></item>
+      <item><widget class="QPushButton" name="editRoiButton"><property name="text"><string>编辑 ROI</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="templateGroup">
+     <property name="title"><string>产品模板 / 配方</string></property>
+     <layout class="QVBoxLayout" name="templateLayout">
+      <item>
+       <layout class="QHBoxLayout" name="templateTop">
+        <item><widget class="QLabel" name="templateLabel"><property name="text"><string>当前模板</string></property></widget></item>
+        <item><widget class="QComboBox" name="templateCombo"><property name="sizePolicy"><sizepolicy hsizetype="Expanding" vsizetype="Fixed"><horstretch>1</horstretch><verstretch>0</verstretch></sizepolicy></property></widget></item>
+        <item><widget class="QPushButton" name="newTemplateButton"><property name="text"><string>新建模板</string></property></widget></item>
+        <item><widget class="QPushButton" name="editTemplateButton"><property name="text"><string>编辑模板</string></property></widget></item>
+        <item><widget class="QPushButton" name="deleteTemplateButton"><property name="text"><string>删除模板</string></property></widget></item>
+        <item><widget class="QPushButton" name="saveTemplateButton"><property name="text"><string>保存当前</string></property></widget></item>
+       </layout>
+      </item>
+      <item><widget class="QLabel" name="modelFileLabel"><property name="text"><string>模型文件：未加载</string></property></widget></item>
+      <item>
+       <layout class="QHBoxLayout" name="detectParams">
+        <item><widget class="QLabel" name="confidenceLabel"><property name="text"><string>置信度</string></property></widget></item>
+        <item><widget class="QDoubleSpinBox" name="confidenceSpin"/></item>
+        <item><widget class="QLabel" name="countLabel"><property name="text"><string>检测数量</string></property></widget></item>
+        <item><widget class="QSpinBox" name="countSpin"/></item>
+        <item><widget class="QCheckBox" name="useGestureCheck"><property name="text"><string>使用手势</string></property></widget></item>
+        <item><widget class="QLabel" name="gestureLabel"><property name="text"><string>手势姿势</string></property></widget></item>
+        <item><widget class="QComboBox" name="gestureCombo"/></item>
+       </layout>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSplitter" name="mainSplitter">
+     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+     <widget class="QGroupBox" name="labelGroup">
+      <property name="title"><string>模型标签</string></property>
+      <layout class="QVBoxLayout" name="labelLayout">
+       <item>
+        <layout class="QHBoxLayout" name="labelButtons">
+         <item><widget class="QPushButton" name="loadModelButton"><property name="text"><string>加载模型</string></property></widget></item>
+         <item><widget class="QPushButton" name="loadLabelsButton"><property name="text"><string>加载标签</string></property></widget></item>
+         <item><widget class="QPushButton" name="clearLabelsButton"><property name="text"><string>清空</string></property></widget></item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="labelTable">
+         <property name="columnCount"><number>1</number></property>
+         <column><property name="text"><string>标签名称</string></property></column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="flowGroup">
+      <property name="title"><string>检测流程配置</string></property>
+      <layout class="QVBoxLayout" name="flowLayout">
+       <item><widget class="QLabel" name="flowHint"><property name="text"><string>每一行代表一个检测阶段；标签选择来自左侧英文标签。</string></property></widget></item>
+       <item>
+        <layout class="QHBoxLayout" name="flowToolbar">
+         <item><widget class="QPushButton" name="hideLabelButton"><property name="text"><string>隐藏标签栏</string></property></widget></item>
+         <item><widget class="QPushButton" name="addStepButton"><property name="text"><string>添加步骤</string></property></widget></item>
+         <item><widget class="QPushButton" name="deleteStepButton"><property name="text"><string>删除选中</string></property></widget></item>
+         <item><widget class="QPushButton" name="moveUpButton"><property name="text"><string>上移</string></property></widget></item>
+         <item><widget class="QPushButton" name="moveDownButton"><property name="text"><string>下移</string></property></widget></item>
+        </layout>
+       </item>
+       <item>
+        <widget class="QTableWidget" name="flowTable">
+         <property name="columnCount"><number>8</number></property>
+         <column><property name="text"><string>步骤名称</string></property></column>
+         <column><property name="text"><string>使用 ROI</string></property></column>
+         <column><property name="text"><string>使用标签</string></property></column>
+         <column><property name="text"><string>置信度分数</string></property></column>
+         <column><property name="text"><string>检测数量</string></property></column>
+         <column><property name="text"><string>使用手势</string></property></column>
+         <column><property name="text"><string>手势姿势</string></property></column>
+         <column><property name="text"><string>启用</string></property></column>
+        </widget>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

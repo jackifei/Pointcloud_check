@@ -1,0 +1,36 @@
+name: '123'
+model_file: ''
+rois:
+- name: ROI-5
+  shape: rect
+  cx: 209.921875
+  cy: 137.08984375
+  w: 160.0
+  h: 120.0
+  angle: 0.0
+- name: ROI-6
+  shape: circle
+  cx: 189.14453125
+  cy: 326.359375
+  radius: 60.0
+detection:
+  confidence: 0.5
+  detection_count: 20
+  spare_1: ''
+  spare_2: ''
+  spare_3: ''
+  enable_1: true
+  enable_2: true
+  enable_3: false
+  enable_4: false
+  enable_5: false
+  function_1: 功能1
+  function_2: 功能2
+  function_3: 功能3
+  function_4: 功能3
+  function_5: 功能5
+other_params:
+- name: '11'
+  value: '22'
+- name: '33'
+  value: '44'

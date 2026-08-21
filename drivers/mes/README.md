@@ -1,0 +1,13 @@
+# MES 驱动目录
+
+用于封装不同工厂 MES 接口，例如：
+
+```python
+class MesDriver:
+    def configure(self, url: str, api_key: str) -> None: ...
+    def test_connection(self) -> bool: ...
+    def send(self, message_type: str, payload: dict) -> bool: ...
+    def build_custom_message(self, template: str, data: dict) -> str: ...
+```
+
+与页面集成位置：`app/pages/mes_page.py` 中的“保存配置 / 测试连接 / 发送测试报文”插入点。

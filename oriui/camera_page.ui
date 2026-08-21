@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>CameraPage</class>
+ <widget class="QWidget" name="CameraPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1200</width><height>720</height></rect></property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { background-color: #1e1e1e; color: #d4d4d4; font-family: "Microsoft YaHei", "Segoe UI"; font-size: 13px; }
+QFrame#pageHeader { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 4px; }
+QLabel#pageResult { color: #4ec9b0; font-weight: 600; }
+QLabel#pageTip { color: #9d9d9d; font-size: 12px; }
+QGroupBox { border: 1px solid #3c3c3c; border-radius: 4px; margin-top: 10px; padding-top: 10px; font-weight: 600; }
+QGroupBox::title { subcontrol-origin: margin; left: 8px; padding: 0 4px; color: #dcdcdc; }
+QPushButton { background-color: #333333; border: 1px solid #555555; border-radius: 3px; padding: 6px 12px; color: #d4d4d4; }
+QPushButton:hover { background-color: #3c3c3c; }
+QPushButton:checked { background-color: #0e639c; border-color: #007acc; color: #ffffff; }
+QLineEdit, QTextEdit, QPlainTextEdit, QComboBox, QSpinBox, QDoubleSpinBox { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 3px; padding: 4px 6px; }
+QTableWidget, QTableView { background-color: #252526; alternate-background-color: #2a2a2b; border: 1px solid #3c3c3c; gridline-color: #3c3c3c; }
+QHeaderView::section { background-color: #333333; color: #d4d4d4; border: none; border-right: 1px solid #3c3c3c; border-bottom: 1px solid #3c3c3c; padding: 6px; }
+QSplitter::handle { background-color: #3c3c3c; }
+QSplitter::handle:horizontal { width: 5px; }
+QLabel#imageView { background-color: #111111; border: 1px dashed #4a4a4a; border-radius: 4px; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="pageHeader">
+     <layout class="QHBoxLayout" name="headerLayout">
+      <item><widget class="QLabel" name="pageResult"><property name="text"><string>检测结果：相机未连接</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSplitter" name="mainSplitter">
+     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+     <widget class="QWidget" name="imageArea">
+      <layout class="QVBoxLayout" name="imageLayout">
+       <item><widget class="QLabel" name="imageView"><property name="text"><string>图像显示区</string></property><property name="alignment"><set>Qt::AlignCenter</set></property></widget></item>
+       <item>
+        <layout class="QHBoxLayout" name="imageActions">
+         <item><spacer name="leftSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
+         <item><widget class="QPushButton" name="loadImageButton"><property name="text"><string>加载图片</string></property></widget></item>
+         <item><widget class="QPushButton" name="startPreviewButton"><property name="text"><string>开始预览</string></property></widget></item>
+         <item><widget class="QPushButton" name="stopPreviewButton"><property name="text"><string>停止预览</string></property></widget></item>
+         <item><spacer name="rightSpacer"><property name="orientation"><enum>Qt::Horizontal</enum></property><property name="sizeHint" stdset="0"><size><width>40</width><height>20</height></size></property></spacer></item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="settingsArea">
+      <layout class="QVBoxLayout" name="settingsLayout">
+       <item>
+        <widget class="QGroupBox" name="cameraControlGroup">
+         <property name="title"><string>相机控制</string></property>
+         <layout class="QFormLayout" name="cameraControlForm">
+          <item row="0" column="0"><widget class="QLabel" name="cameraTypeLabel"><property name="text"><string>相机类型</string></property></widget></item>
+          <item row="0" column="1"><widget class="QComboBox" name="cameraTypeCombo"/></item>
+          <item row="1" column="0"><widget class="QLabel" name="driverLabel"><property name="text"><string>驱动选择</string></property></widget></item>
+          <item row="1" column="1"><widget class="QComboBox" name="driverCombo"/></item>
+          <item row="2" column="0"><widget class="QLabel" name="cameraListLabel"><property name="text"><string>相机列表</string></property></widget></item>
+          <item row="2" column="1"><widget class="QComboBox" name="cameraListCombo"/></item>
+          <item row="3" column="1"><widget class="QPushButton" name="enumerateButton"><property name="text"><string>枚举相机</string></property></widget></item>
+          <item row="4" column="1"><widget class="QPushButton" name="openCameraButton"><property name="text"><string>打开相机</string></property><property name="checkable"><bool>true</bool></property></widget></item>
+         </layout>
+        </widget>
+       </item>
+       <item>
+        <widget class="QGroupBox" name="paramGroup">
+         <property name="title"><string>参数设置区</string></property>
+         <layout class="QFormLayout" name="paramForm">
+          <item row="0" column="0"><widget class="QLabel" name="exposureLabel"><property name="text"><string>曝光时间</string></property></widget></item>
+          <item row="0" column="1"><widget class="QDoubleSpinBox" name="exposureSpin"><property name="suffix"><string> us</string></property></widget></item>
+          <item row="1" column="0"><widget class="QLabel" name="gainLabel"><property name="text"><string>增益</string></property></widget></item>
+          <item row="1" column="1"><widget class="QDoubleSpinBox" name="gainSpin"/></item>
+          <item row="2" column="0"><widget class="QLabel" name="frameRateLabel"><property name="text"><string>帧率</string></property></widget></item>
+          <item row="2" column="1"><widget class="QDoubleSpinBox" name="frameRateSpin"><property name="suffix"><string> fps</string></property></widget></item>
+          <item row="3" column="0"><widget class="QLabel" name="triggerLabel"><property name="text"><string>触发模式</string></property></widget></item>
+          <item row="3" column="1"><widget class="QComboBox" name="triggerCombo"/></item>
+          <item row="4" column="0"><widget class="QLabel" name="pixelFormatLabel"><property name="text"><string>像素格式</string></property></widget></item>
+          <item row="4" column="1"><widget class="QComboBox" name="pixelFormatCombo"/></item>
+         </layout>
+        </widget>
+       </item>
+       <item><widget class="QPushButton" name="saveCameraConfigButton"><property name="text"><string>保存相机配置</string></property></widget></item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>MesPage</class>
+ <widget class="QWidget" name="MesPage">
+  <property name="geometry"><rect><x>0</x><y>0</y><width>1200</width><height>720</height></rect></property>
+  <property name="styleSheet">
+   <string notr="true">QWidget { background-color: #1e1e1e; color: #d4d4d4; font-family: "Microsoft YaHei", "Segoe UI"; font-size: 13px; }
+QFrame#pageHeader { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 4px; }
+QLabel#pageResult { color: #4ec9b0; font-weight: 600; }
+QLabel#pageTip { color: #9d9d9d; font-size: 12px; }
+QGroupBox { border: 1px solid #3c3c3c; border-radius: 4px; margin-top: 10px; padding-top: 10px; font-weight: 600; }
+QGroupBox::title { subcontrol-origin: margin; left: 8px; padding: 0 4px; color: #dcdcdc; }
+QPushButton { background-color: #333333; border: 1px solid #555555; border-radius: 3px; padding: 6px 12px; color: #d4d4d4; }
+QPushButton:hover { background-color: #3c3c3c; }
+QLineEdit, QPlainTextEdit { background-color: #252526; border: 1px solid #3c3c3c; border-radius: 3px; padding: 4px 6px; }
+QListWidget { background-color: #252526; border: 1px solid #3c3c3c; }
+QSplitter::handle { background-color: #3c3c3c; }
+QSplitter::handle:horizontal { width: 5px; }</string>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout">
+   <item>
+    <widget class="QFrame" name="pageHeader">
+     <layout class="QHBoxLayout" name="headerLayout">
+      <item><widget class="QLabel" name="pageResult"><property name="text"><string>检测结果：MES 未发送测试</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="connectionGroup">
+     <property name="title"><string>MES 服务配置</string></property>
+     <layout class="QFormLayout" name="connectionForm">
+      <item row="0" column="0"><widget class="QLabel" name="urlLabel"><property name="text"><string>上报地址</string></property></widget></item>
+      <item row="0" column="1"><widget class="QLineEdit" name="urlEdit"/></item>
+      <item row="1" column="0"><widget class="QLabel" name="apiKeyLabel"><property name="text"><string>API Key</string></property></widget></item>
+      <item row="1" column="1"><widget class="QLineEdit" name="apiKeyEdit"><property name="echoMode"><enum>QLineEdit::Password</enum></property></widget></item>
+      <item row="2" column="1"><widget class="QPushButton" name="testConnectionButton"><property name="text"><string>测试连接</string></property></widget></item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QSplitter" name="mainSplitter">
+     <property name="orientation"><enum>Qt::Horizontal</enum></property>
+     <widget class="QGroupBox" name="messageGroup">
+      <property name="title"><string>选择上报报文</string></property>
+      <layout class="QVBoxLayout" name="messageLayout">
+       <item><widget class="QLabel" name="messageHint"><property name="text"><string>勾选后，对应报文会在实际 MES 模块中排队发送。</string></property></widget></item>
+       <item><widget class="QListWidget" name="messageList"/></item>
+      </layout>
+     </widget>
+     <widget class="QGroupBox" name="customGroup">
+      <property name="title"><string>自定义报文模板</string></property>
+      <layout class="QVBoxLayout" name="customLayout">
+       <item><widget class="QPlainTextEdit" name="templateEdit"/></item>
+       <item>
+        <layout class="QHBoxLayout" name="customButtons">
+         <item><widget class="QPushButton" name="saveButton"><property name="text"><string>保存配置</string></property></widget></item>
+         <item><widget class="QPushButton" name="sendTestButton"><property name="text"><string>发送测试报文</string></property></widget></item>
+         <item><widget class="QPushButton" name="resetButton"><property name="text"><string>重置模板</string></property></widget></item>
+        </layout>
+       </item>
+       <item><widget class="QPlainTextEdit" name="statusEdit"/></item>
+      </layout>
+     </widget>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
