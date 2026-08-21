@@ -79,7 +79,7 @@
     <widget class="QSplitter" name="mainSplitter">
      <property name="orientation"><enum>Qt::Horizontal</enum></property>
      <widget class="QGroupBox" name="cameraGroup">
-      <property name="title"><string>相机图像显示区</string></property>
+      <property name="title"><string>三维点云显示区</string></property>
       <layout class="QVBoxLayout" name="cameraLayout">
        <item><widget class="QWidget" name="cameraView"/></item>
        <item><widget class="QLabel" name="roiLabel"><property name="text"><string>ROI：--</string></property></widget></item>

@@ -18,13 +18,13 @@ from PyQt6.QtWidgets import (
 from .help_dialog import HelpDialog
 from .checkdog.license_manager import LicenseManager
 from .pages import (
-    CameraPage,
     FlowPage,
     HardwareConfigPage,
     LogPage,
     MesPage,
     ParametersPage,
     PersonnelPage,
+    PointCloudDevicePage,
     ResultQueryPage,
     RunDashboardPage,
 )
@@ -32,7 +32,7 @@ from .status_bar import StatusBar
 
 
 NAV_ITEMS = [
-    ("相机管理", CameraPage),
+    ("点云设备管理", PointCloudDevicePage),
     ("运行看板", RunDashboardPage),
     ("模板编辑", FlowPage),
     ("硬件配置", HardwareConfigPage),
@@ -81,7 +81,7 @@ class MainWindow(QMainWindow):
 
     def _build_pages(self) -> None:
         self.pages: list[QWidget] = []
-        self.camera_page: CameraPage | None = None
+        self.pointcloud_page: PointCloudDevicePage | None = None
         self.dashboard_page: RunDashboardPage | None = None
         self.flow_page: FlowPage | None = None
         for _, page_class in NAV_ITEMS:
@@ -90,9 +90,9 @@ class MainWindow(QMainWindow):
             self.stack.addWidget(page)
             # 将各页面顶部提示同步到主窗口导航栏右侧，减少页面内占用。
             page.tip_changed.connect(self._on_page_tip_changed)
-            if isinstance(page, CameraPage):
-                self.camera_page = page
-                page.camera_metrics_changed.connect(self._on_camera_metrics_changed)
+            if isinstance(page, PointCloudDevicePage):
+                self.pointcloud_page = page
+                page.point_cloud_metrics_changed.connect(self._on_point_cloud_metrics_changed)
             if isinstance(page, RunDashboardPage):
                 self.dashboard_page = page
                 page.dashboard_full_status_changed.connect(self._on_dashboard_full_status_changed)
@@ -102,10 +102,10 @@ class MainWindow(QMainWindow):
             if isinstance(page, FlowPage):
                 self.flow_page = page
 
-        if self.camera_page is not None and self.dashboard_page is not None:
-            self.camera_page.image_changed.connect(self.dashboard_page.set_image)
-        if self.camera_page is not None and self.flow_page is not None:
-            self.camera_page.image_changed.connect(self.flow_page.set_roi_image)
+        if self.pointcloud_page is not None and self.dashboard_page is not None:
+            self.pointcloud_page.point_cloud_changed.connect(self.dashboard_page.set_point_cloud)
+        if self.pointcloud_page is not None and self.flow_page is not None:
+            self.pointcloud_page.point_cloud_changed.connect(self.flow_page.set_point_cloud)
 
     def _build_nav_bar(self) -> QFrame:
         bar = QFrame()
@@ -189,11 +189,14 @@ class MainWindow(QMainWindow):
     def _on_dashboard_template_changed(self, template_name: str) -> None:
         self.status_bar.set_status("template", f"模板: {template_name}")
 
-    def _on_camera_metrics_changed(self, data: dict) -> None:
+    def _on_point_cloud_metrics_changed(self, data: dict) -> None:
         fps = data.get("fps", "--")
-        image_size = data.get("image_size", "--")
+        point_count = data.get("point_count", "--")
         self.status_bar.set_status("fps", f"FPS: {fps}")
-        self.status_bar.set_status("image_size", f"图像: {image_size}")
+        if isinstance(point_count, int):
+            self.status_bar.set_status("image_size", f"点数: {point_count:,}")
+        else:
+            self.status_bar.set_status("image_size", f"点数: {point_count}")
 
     def _show_help(self) -> None:
         if self.help_dialog is None:

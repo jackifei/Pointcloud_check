@@ -12,7 +12,7 @@ from PyQt6.QtWidgets import (
 )
 
 from ..services.dashboard_service import DashboardService, DashboardSnapshot
-from ..widgets import CameraViewWidget, StatCard
+from ..widgets import PointCloudView, StatCard
 
 if __package__ in (None, ""):
     import sys
@@ -27,7 +27,7 @@ else:
 class RunDashboardPage(BasePage):
     """运行看板页面。
 
-    显示相机图像与 ROI，顶部展示 OK/NG、日/周/月统计和 OK 完成率。
+    三维点云实时显示，顶部展示 OK/NG、日/周/月统计和 OK 完成率。
     """
 
     dashboard_full_status_changed = pyqtSignal(dict)
@@ -36,7 +36,7 @@ class RunDashboardPage(BasePage):
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(
             "运行看板",
-            "实时查看当前模板、相机画面和生产统计。",
+            "实时查看当前模板、三维点云和生产统计。",
             parent,
         )
         self.service = DashboardService()
@@ -46,7 +46,7 @@ class RunDashboardPage(BasePage):
 
     def _build_ui(self) -> None:
         self.add_to_content(self._build_dashboard_status_group())
-        self.add_to_content(self._build_camera_area(), stretch=1)
+        self.add_to_content(self._build_point_cloud_area(), stretch=1)
 
     def _build_dashboard_status_group(self) -> QGroupBox:
         group = QGroupBox("看板统计")
@@ -90,21 +90,21 @@ class RunDashboardPage(BasePage):
         self.ng_add_button.clicked.connect(self._simulate_ng)
         return group
 
-    def _build_camera_area(self) -> QGroupBox:
-        group = QGroupBox("相机图像显示区")
+    def _build_point_cloud_area(self) -> QGroupBox:
+        group = QGroupBox("三维点云显示区")
         layout = QVBoxLayout(group)
 
-        self.camera_view = CameraViewWidget()
-        layout.addWidget(self.camera_view, 1)
+        self.point_cloud_view = PointCloudView()
+        layout.addWidget(self.point_cloud_view, 1)
 
         self.roi_label = QLabel("ROI：--")
         self.roi_label.setObjectName("pageTip")
         layout.addWidget(self.roi_label)
         return group
 
-    def set_image(self, pixmap) -> None:
-        """接收相机管理页广播的图像，用于看板同步显示。"""
-        self.camera_view.set_pixmap(pixmap)
+    def set_point_cloud(self, pcd) -> None:
+        """接收点云设备管理页广播的点云，用于看板三维显示。"""
+        self.point_cloud_view.set_point_cloud(pcd)
 
     def _build_full_status_area(self) -> QGroupBox:
         self.full_status_group = QGroupBox("完整看板状态")
@@ -155,12 +155,10 @@ class RunDashboardPage(BasePage):
         self.month_card.set_value(str(snapshot.month))
         self.rate_card.set_value(f"{snapshot.ok_rate:.1f}%")
 
-        self.camera_view.set_status_text(
-            f"当前模板：{snapshot.template_name}    等待相机画面"
-        )
-        self.camera_view.set_rois(snapshot.rois)
         roi_text = "、".join(f"ROI-{i + 1}" for i in range(len(snapshot.rois))) or "无"
-        self.roi_label.setText(f"ROI：{roi_text}")
+        self.roi_label.setText(
+            f"ROI：{roi_text}    当前模板：{snapshot.template_name}"
+        )
 
         self.set_result(
             f"检测结果：OK {snapshot.ok}，NG {snapshot.ng}，"

@@ -37,12 +37,12 @@ class StatusBar(QWidget):
         # 左侧状态项：用于系统就绪、硬件连接、相机连接和当前页面。
         self.add_item("ready", "就绪", kind="ok")
         self.add_item("fps", "FPS: --")
-        self.add_item("image_size", "图像: --")
+        self.add_item("image_size", "点数: --")
         self.add_item("hardware", "硬件: 未连接", kind="warn")
-        # 相机状态更新示例：
-        # self.set_status("camera", "相机: 已连接 GIGE-CAM-01", kind="ok")
-        self.add_item("camera", "相机: 未连接", kind="warn")
-        self.add_item("page", "界面: 相机管理")
+        # 设备状态更新示例：
+        # self.set_status("camera", "设备: 已连接 TOF-3D-01", kind="ok")
+        self.add_item("camera", "设备: 未连接", kind="warn")
+        self.add_item("page", "界面: 点云设备管理")
 
         # 插入点：新增全局状态项时，在这里继续调用 add_item 即可。
 

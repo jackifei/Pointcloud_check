@@ -3,6 +3,7 @@
 程序运行时会将各页面配置保存到此目录，文件名对应页面或功能：
 
 - camera.yaml
+- pointcloud_device.yaml
 - hardware.yaml
 - system.yaml
 - mes.yaml

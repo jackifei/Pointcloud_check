@@ -1,5 +1,6 @@
 name: '123'
 model_file: ''
+point_cloud_file: ''
 rois:
 - name: ROI-5
   shape: rect

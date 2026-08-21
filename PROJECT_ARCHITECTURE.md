@@ -28,9 +28,11 @@ SOP/
 │  └─ *.ui
 ├─ drivers/
 │  ├─ camera/
+│  ├─ pointcloud/
 │  ├─ io/
 │  └─ mes/
 ├─ algorithms/
+│  └─ pointcloud/
 └─ app/
    ├─ main_window.py
    ├─ status_bar.py
@@ -65,7 +67,7 @@ SOP/
 
 ```python
 NAV_ITEMS = [
-    ("相机管理", CameraPage),
+    ("点云设备管理", PointCloudDevicePage),
     ("运行看板", RunDashboardPage),
 ]
 ```
@@ -115,7 +117,40 @@ template_changed = pyqtSignal(str)
 
 `MainWindow` 接收这些信号并更新底部状态栏。
 
-## 6. 相机驱动扩展位置
+## 6. 点云设备驱动扩展位置
+
+推荐目录：
+
+```text
+drivers/pointcloud/
+```
+
+统一接口（所有 3D 相机驱动继承）：
+
+```python
+class PointCloudDeviceDriver:
+    def enumerate_devices(self) -> list[dict]: ...
+    def open(self, device_id: str) -> bool: ...
+    def close(self) -> None: ...
+    def is_opened(self) -> bool: ...
+    def capture(self) -> open3d.geometry.PointCloud: ...
+    def set_parameter(self, key: str, value) -> None: ...
+```
+
+页面接入位置：
+
+- `app/pages/pointcloud_device_page.py`
+- 已实现 `FilePointCloudDriver`（把 `data/pointclouds/` 下的 .ply/.pcd 文件当作设备）
+- 搜索 `插入点` 注释，将真实 3D 相机（TOF/结构光/激光轮廓仪）SDK 接入
+
+三维显示控件：`app/widgets/point_cloud_view.py`（基于 PyQt6 QOpenGLWidget 自绘，
+不依赖 Open3D GUI 模块；Open3D 用于点云读写与处理）。
+
+控件能力：划区框选点云、半透明拟合平面显示、旋转/平移/缩放、高度伪彩等。
+运行看板使用同一控件做三维点云实时显示；模板编辑页支持
+“区域选择 -> RANSAC/最小二乘平面拟合 -> 显示拟合平面”交互。
+
+## 6.1 相机驱动扩展位置（2D 相机，兼容保留）
 
 推荐目录：
 
@@ -138,9 +173,9 @@ class CameraDriver:
 
 页面接入位置：
 
-- `app/pages/camera_page.py`
-- 搜索 `插入点` 注释
-- 将 `_enumerate_cameras()`、`_toggle_camera()` 中的 demo 逻辑替换为真实驱动调用
+- 原 `app/pages/camera_page.py` 已升级为点云设备管理页；
+  如后续需要 2D 相机页面，可在 `app/pages/` 下新建页面接入该驱动
+- 运行看板仍保留 2D 图像显示控件，接收点云页广播的投影图
 
 ## 7. IO 驱动扩展位置
 
@@ -195,6 +230,14 @@ class MesDriver:
 ```text
 algorithms/
 ```
+
+点云算法：
+
+```text
+algorithms/pointcloud/
+```
+
+当前包含体素降采样、离群点去除、法线估算、高度投影图等预处理功能。
 
 建议接口：
 

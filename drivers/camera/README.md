@@ -19,3 +19,6 @@ class CameraDriver:
 ```
 
 与页面集成时，在 `app/pages/camera_page.py` 中替换“插入点”注释处的 demo 逻辑。
+
+说明：相机管理页已升级为「点云设备管理页」（`app/pages/pointcloud_device_page.py`），
+如需恢复 2D 相机页面，可在 `app/pages/` 下新建页面并复用本驱动。

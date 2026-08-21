@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from copy import deepcopy
+from pathlib import Path
 
 from PyQt6.QtCore import Qt
 from PyQt6.QtWidgets import (
@@ -38,11 +39,11 @@ if __package__ in (None, ""):
     sys.path.insert(0, str(Path(__file__).resolve().parents[2]))
     from app.pages.base_page import BasePage
     from app.services.config_service import ConfigService
-    from app.widgets import RoiCanvas, RoiEditorDialog
+    from app.widgets import PointCloudView, RoiCanvas, RoiEditorDialog
 else:
     from .base_page import BasePage
     from ..services.config_service import ConfigService
-    from ..widgets import RoiCanvas, RoiEditorDialog
+    from ..widgets import PointCloudView, RoiCanvas, RoiEditorDialog
 
 
 def _default_template(name: str) -> dict:
@@ -50,6 +51,7 @@ def _default_template(name: str) -> dict:
     return {
         "name": name,
         "model_file": "",
+        "point_cloud_file": "",
         "rois": [
             {"name": "ROI-1", "shape": "rect", "cx": 150, "cy": 120, "w": 200, "h": 150, "angle": 0},
             {"name": "ROI-2", "shape": "rect", "cx": 440, "cy": 170, "w": 220, "h": 160, "angle": 0},
@@ -83,6 +85,12 @@ class FlowPage(BasePage):
     """
 
     FUNCTION_OPTIONS = ["功能1", "功能2", "功能3", "功能4", "功能5"]
+    PLANE_COLORS = {
+        "青色": "#4ec9b0",
+        "红色": "#f48771",
+        "绿色": "#39ff14",
+        "蓝色": "#4fa3ff",
+    }
 
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(
@@ -168,8 +176,83 @@ class FlowPage(BasePage):
         group = QGroupBox("ROI Config")
         layout = QVBoxLayout(group)
 
+        # 左侧三维点云显示，右侧二维 ROI 编辑画布（基于点云投影图）。
+        self.roi_splitter = QSplitter(Qt.Orientation.Horizontal)
+        self.roi_splitter.setChildrenCollapsible(False)
+        self.roi_splitter.setHandleWidth(5)
+
+        self.point_cloud_view = PointCloudView()
+        self.roi_splitter.addWidget(self.point_cloud_view)
+
         self.roi_canvas = RoiCanvas()
-        layout.addWidget(self.roi_canvas, 1)
+        self.roi_splitter.addWidget(self.roi_canvas)
+        self.roi_splitter.setStretchFactor(0, 1)
+        self.roi_splitter.setStretchFactor(1, 1)
+        self.roi_splitter.setSizes([420, 420])
+        layout.addWidget(self.roi_splitter, 1)
+
+        view_row = QHBoxLayout()
+        self.load_point_cloud_button = QPushButton("加载点云参考")
+        self.project_view_button = QPushButton("当前视角投影到 ROI")
+        self.clear_point_cloud_button = QPushButton("清空点云")
+        view_row.addWidget(self.load_point_cloud_button)
+        view_row.addWidget(self.project_view_button)
+        view_row.addWidget(self.clear_point_cloud_button)
+        view_row.addStretch(1)
+        layout.addLayout(view_row)
+
+        fit_row = QHBoxLayout()
+        self.select_toggle_button = QPushButton("区域选择")
+        self.select_toggle_button.setCheckable(True)
+        self.clear_select_button = QPushButton("清除选择")
+        self.fit_plane_button = QPushButton("拟合平面")
+        self.clear_plane_button = QPushButton("清除平面")
+        fit_row.addWidget(self.select_toggle_button)
+        fit_row.addWidget(self.clear_select_button)
+        fit_row.addWidget(self.fit_plane_button)
+        fit_row.addWidget(self.clear_plane_button)
+        fit_row.addStretch(1)
+        layout.addLayout(fit_row)
+
+        fit_param_row = QHBoxLayout()
+        fit_param_row.addWidget(QLabel("拟合方法"))
+        self.fit_method_combo = QComboBox()
+        self.fit_method_combo.addItems(["RANSAC", "最小二乘"])
+        fit_param_row.addWidget(self.fit_method_combo)
+
+        fit_param_row.addWidget(QLabel("距离阈值"))
+        self.fit_threshold_spin = QDoubleSpinBox()
+        self.fit_threshold_spin.setRange(0.01, 100.0)
+        self.fit_threshold_spin.setDecimals(2)
+        self.fit_threshold_spin.setValue(1.0)
+        self.fit_threshold_spin.setSuffix(" mm")
+        fit_param_row.addWidget(self.fit_threshold_spin)
+
+        fit_param_row.addWidget(QLabel("迭代次数"))
+        self.fit_iterations_spin = QSpinBox()
+        self.fit_iterations_spin.setRange(10, 100000)
+        self.fit_iterations_spin.setValue(100)
+        fit_param_row.addWidget(self.fit_iterations_spin)
+
+        fit_param_row.addWidget(QLabel("平面尺寸"))
+        self.plane_size_spin = QDoubleSpinBox()
+        self.plane_size_spin.setRange(5.0, 10000.0)
+        self.plane_size_spin.setDecimals(1)
+        self.plane_size_spin.setValue(200.0)
+        self.plane_size_spin.setSuffix(" mm")
+        fit_param_row.addWidget(self.plane_size_spin)
+
+        fit_param_row.addWidget(QLabel("平面颜色"))
+        self.plane_color_combo = QComboBox()
+        self.plane_color_combo.addItems(list(self.PLANE_COLORS.keys()))
+        fit_param_row.addWidget(self.plane_color_combo)
+        fit_param_row.addStretch(1)
+        layout.addLayout(fit_param_row)
+
+        self.fit_result_label = QLabel("拟合结果：--")
+        self.fit_result_label.setWordWrap(True)
+        self.fit_result_label.setStyleSheet("color: #9d9d9d;")
+        layout.addWidget(self.fit_result_label)
 
         button_row = QHBoxLayout()
         self.edit_roi_button = QPushButton("编辑 ROI")
@@ -180,6 +263,13 @@ class FlowPage(BasePage):
         button_row.addStretch(1)
         layout.addLayout(button_row)
 
+        self.load_point_cloud_button.clicked.connect(self._open_point_cloud_file)
+        self.project_view_button.clicked.connect(self._project_view_to_roi)
+        self.clear_point_cloud_button.clicked.connect(self._clear_point_cloud)
+        self.select_toggle_button.toggled.connect(self.point_cloud_view.set_selection_enabled)
+        self.clear_select_button.clicked.connect(self.point_cloud_view.clear_selection)
+        self.fit_plane_button.clicked.connect(self._fit_plane)
+        self.clear_plane_button.clicked.connect(self._clear_plane)
         self.edit_roi_button.clicked.connect(self._open_roi_editor)
         self.crosshair_check.toggled.connect(self.roi_canvas.set_crosshair_visible)
         return group
@@ -378,6 +468,15 @@ class FlowPage(BasePage):
 
         self.roi_canvas.set_rois(deepcopy(data.get("rois", [])))
 
+        point_cloud_file = str(data.get("point_cloud_file") or "")
+        if point_cloud_file and Path(point_cloud_file).exists():
+            self._load_point_cloud_file(Path(point_cloud_file))
+        else:
+            self.point_cloud_view.clear()
+            self.roi_canvas.set_pixmap(None)
+        self.point_cloud_view.clear_fitted_plane()
+        self.fit_result_label.setText("拟合结果：--")
+
         detection = data.get("detection") or {}
         self.confidence_spin.setValue(float(detection.get("confidence", 0.5)))
         self.detection_count_spin.setValue(int(detection.get("detection_count", 20)))
@@ -400,9 +499,115 @@ class FlowPage(BasePage):
         self.set_result(f"检测结果：模板「{name}」已加载")
         self.set_tip("操作提示：配置完成后点击“保存当前模板”写入模板目录。")
 
-    def set_roi_image(self, pixmap) -> None:
-        """接收相机管理页广播的图像，用于 ROI 配置区实时显示。"""
-        self.roi_canvas.set_pixmap(pixmap)
+    def set_point_cloud(self, pcd) -> None:
+        """接收点云设备管理页广播的点云，用于 ROI 配置区实时显示。"""
+        self.point_cloud_view.set_point_cloud(pcd)
+        if self.point_cloud_view.isVisible():
+            self._project_view_to_roi()
+
+    def _open_point_cloud_file(self) -> None:
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "加载点云参考",
+            "",
+            "点云文件 (*.ply *.pcd *.xyz *.pts);;所有文件 (*.*)",
+        )
+        if not file_path:
+            return
+        self._load_point_cloud_file(Path(file_path))
+        if self.current_template_name:
+            self.templates.setdefault(self.current_template_name, {})["point_cloud_file"] = file_path
+        self.set_tip("操作提示：点云参考已加载，点击“保存当前模板”可写入模板目录。")
+
+    def _load_point_cloud_file(self, path: Path) -> None:
+        import open3d as o3d
+
+        pcd = o3d.io.read_point_cloud(str(path))
+        if pcd is None or len(pcd.points) == 0:
+            self.set_result(f"检测结果：点云文件为空或格式不支持 {path.name}")
+            return
+        self.point_cloud_view.set_point_cloud(pcd)
+        if self.point_cloud_view.isVisible():
+            self._project_view_to_roi()
+        self.set_result(f"检测结果：已加载点云 {path.name}（{len(pcd.points):,} 点）")
+
+    def _project_view_to_roi(self) -> None:
+        """把 3D 视图当前画面投影到右侧 ROI 画布作为编辑底图。"""
+        if self.point_cloud_view.has_cloud():
+            pixmap = self.point_cloud_view.grab()
+            if not pixmap.isNull():
+                self.roi_canvas.set_pixmap(pixmap)
+
+    def _clear_point_cloud(self) -> None:
+        self.point_cloud_view.clear()
+        self.roi_canvas.set_pixmap(None)
+        if self.current_template_name:
+            self.templates.setdefault(self.current_template_name, {})["point_cloud_file"] = ""
+        self.set_tip("操作提示：点云参考已清空。")
+
+    def _fit_plane(self) -> None:
+        """对划区选中的点做平面拟合（RANSAC / 最小二乘）并显示拟合平面。"""
+        points = self.point_cloud_view.selected_points()
+        if len(points) < 3:
+            self.set_result("检测结果：请先用“区域选择”框选至少 3 个点")
+            return
+
+        import numpy as np
+        import open3d as o3d
+
+        method = self.fit_method_combo.currentText()
+        if method == "RANSAC":
+            pcd = o3d.geometry.PointCloud()
+            pcd.points = o3d.utility.Vector3dVector(points)
+            model, inliers = pcd.segment_plane(
+                distance_threshold=float(self.fit_threshold_spin.value()),
+                ransac_n=3,
+                num_iterations=int(self.fit_iterations_spin.value()),
+            )
+            a, b, c, d = (float(value) for value in model)
+            fitted = points[inliers] if len(inliers) else points
+        else:
+            centroid = points.mean(axis=0)
+            _, _, vh = np.linalg.svd(points - centroid, full_matrices=False)
+            normal = vh[-1]
+            a, b, c = (float(value) for value in normal)
+            d = -float(np.dot(normal, centroid))
+            fitted = points
+
+        normal_vec = np.array([a, b, c], dtype=np.float64)
+        nlen = float(np.linalg.norm(normal_vec))
+        if nlen < 1e-9:
+            self.set_result("检测结果：拟合失败，点云共线或共点")
+            return
+        unit_normal = normal_vec / nlen
+
+        # 点到平面 RMS 误差（平面方程 ax+by+cz+d=0，除以法线长度得到距离）
+        distances = np.abs(points @ normal_vec + d) / nlen
+        rms = float(np.sqrt(np.mean(distances**2)))
+        center = fitted.mean(axis=0)
+
+        color = self.PLANE_COLORS.get(
+            self.plane_color_combo.currentText(),
+            self.PLANE_COLORS["青色"],
+        )
+        self.point_cloud_view.set_fitted_plane(
+            center=center,
+            normal=unit_normal,
+            size=float(self.plane_size_spin.value()),
+            color=color,
+        )
+        self.fit_result_label.setText(
+            "拟合结果：平面方程 "
+            f"{a:.4f}x + {b:.4f}y + {c:.4f}z + {d:.4f} = 0，"
+            f"选中 {len(points):,} 点 / 拟合 {len(fitted):,} 点，RMS {rms:.4f}"
+        )
+        self.set_result(f"检测结果：平面拟合完成，RMS 误差 {rms:.4f}")
+        self.set_tip("操作提示：可调整拟合参数后重新拟合，或点击“清除平面”。")
+
+    def _clear_plane(self) -> None:
+        self.point_cloud_view.clear_fitted_plane()
+        self.fit_result_label.setText("拟合结果：--")
+        self.set_tip("操作提示：拟合平面已清除。")
 
     def _new_template(self) -> None:
         name, ok = QInputDialog.getText(self, "新建模板", "请输入模板名称：")
@@ -478,6 +683,9 @@ class FlowPage(BasePage):
         data.update(
             {
                 "name": name,
+                "point_cloud_file": str(
+                    self.templates.get(name, {}).get("point_cloud_file", "")
+                ),
                 "rois": self.roi_canvas.get_rois(),
                 "detection": {
                     "confidence": self.confidence_spin.value(),
@@ -507,6 +715,7 @@ class FlowPage(BasePage):
         payload = {
             "name": data.get("name", name),
             "model_file": data.get("model_file", ""),
+            "point_cloud_file": data.get("point_cloud_file", ""),
             "rois": data.get("rois", []),
             "detection": data.get("detection", {}),
             "other_params": data.get("other_params", []),
@@ -515,7 +724,15 @@ class FlowPage(BasePage):
         self.config_service.ensure_template_dirs(name)
         self.config_service.save_template_category(name, "ROI Config", "roi.yaml", {"rois": payload["rois"]})
         self.config_service.save_template_category(name, "Detection Config", "detection.yaml", {"detection": payload["detection"]})
-        self.config_service.save_template_category(name, "Model Config", "model.yaml", {"model_file": payload["model_file"]})
+        self.config_service.save_template_category(
+            name,
+            "Model Config",
+            "model.yaml",
+            {
+                "model_file": payload["model_file"],
+                "point_cloud_file": payload["point_cloud_file"],
+            },
+        )
         self.config_service.save_template_category(name, "Other Config", "other.yaml", {"other_params": payload["other_params"]})
 
     def _open_roi_editor(self) -> None:
