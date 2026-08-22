@@ -45,7 +45,7 @@ else:
     from ..services.config_service import ConfigService
     from ..widgets import PointCloudView, RoiCanvas
 
-from drivers.pointcloud import read_point_cloud
+from drivers.pointcloud import read_point_cloud, read_stl_mesh
 
 
 def _default_template(name: str) -> dict:
@@ -54,6 +54,7 @@ def _default_template(name: str) -> dict:
         "name": name,
         "model_file": "",
         "point_cloud_file": "",
+        "mesh_file": "",
         "rois": [
             {"name": "ROI-1", "shape": "rect", "cx": 150, "cy": 120, "w": 200, "h": 150, "angle": 0},
             {"name": "ROI-2", "shape": "rect", "cx": 440, "cy": 170, "w": 220, "h": 160, "angle": 0},
@@ -334,7 +335,8 @@ class TemplateParamsDialog(QDialog):
 class FlowPage(BasePage):
     """模板编辑页。
 
-    左侧产品模板列表；右侧顶部为三维点云 + 二维 ROI 画布，
+    左侧顶部为三维点云 + 二维 ROI 画布；右侧为产品模板列表
+    （模板名称 / 产品模板 / ROI 列表），页面最右侧。
     底部为操作按钮与平面拟合参数。
     """
 
@@ -364,11 +366,11 @@ class FlowPage(BasePage):
 
         self.template_panel = self._build_template_panel()
         self.template_panel.setMinimumWidth(210)
-        splitter.addWidget(self.template_panel)
         splitter.addWidget(self._build_config_panel())
-        splitter.setStretchFactor(0, 0)
-        splitter.setStretchFactor(1, 1)
-        splitter.setSizes([230, 1000])
+        splitter.addWidget(self.template_panel)
+        splitter.setStretchFactor(0, 1)
+        splitter.setStretchFactor(1, 0)
+        splitter.setSizes([1000, 230])
         self.add_to_content(splitter, stretch=1)
 
     def _build_template_panel(self) -> QWidget:
@@ -496,6 +498,8 @@ class FlowPage(BasePage):
         # 底部：点云显示 + 多边形选择/平面拟合按钮，一行
         general_row = QHBoxLayout()
         self.load_point_cloud_button = QPushButton("加载点云参考")
+        self.load_mesh_button = QPushButton("加载STL网格")
+        self.clear_mesh_button = QPushButton("清空网格")
         self.project_view_button = QPushButton("当前视角投影到 ROI")
         self.clear_point_cloud_button = QPushButton("清空点云")
         self.crosshair_check = QCheckBox("显示十字线")
@@ -503,6 +507,8 @@ class FlowPage(BasePage):
         self.params_button = QPushButton("参数弹窗")
         for widget in (
             self.load_point_cloud_button,
+            self.load_mesh_button,
+            self.clear_mesh_button,
             self.project_view_button,
             self.clear_point_cloud_button,
             self.crosshair_check,
@@ -532,6 +538,8 @@ class FlowPage(BasePage):
         layout.addLayout(general_row)
 
         self.load_point_cloud_button.clicked.connect(self._open_point_cloud_file)
+        self.load_mesh_button.clicked.connect(self._open_mesh_file)
+        self.clear_mesh_button.clicked.connect(self._clear_mesh)
         self.project_view_button.clicked.connect(self._project_view_to_roi)
         self.clear_point_cloud_button.clicked.connect(self._clear_point_cloud)
         self.crosshair_check.toggled.connect(self.roi_canvas.set_crosshair_visible)
@@ -612,6 +620,12 @@ class FlowPage(BasePage):
             self.point_cloud_view.clear()
             self.roi_canvas.set_pixmap(None)
 
+        mesh_file = str(data.get("mesh_file") or "")
+        if mesh_file and Path(mesh_file).exists():
+            self._load_mesh_file(Path(mesh_file))
+        else:
+            self.point_cloud_view.clear_mesh()
+
         # 按保存时的图像尺寸等比缩放到当前图像尺寸，保持 ROI 与背景图的比例
         saved_size = data.get("roi_image_size")
         current_pixmap = self.roi_canvas.pixmap()
@@ -673,6 +687,35 @@ class FlowPage(BasePage):
         if self.current_template_name:
             self.templates.setdefault(self.current_template_name, {})["point_cloud_file"] = file_path
         self.set_tip("操作提示：点云参考已加载，点击“保存当前模板”可写入模板目录。")
+
+    def _open_mesh_file(self) -> None:
+        file_path, _ = QFileDialog.getOpenFileName(
+            self,
+            "加载STL网格",
+            "",
+            "网格模型 (*.stl);;所有文件 (*.*)",
+        )
+        if not file_path:
+            return
+        self._load_mesh_file(Path(file_path))
+        if self.current_template_name:
+            self.templates.setdefault(self.current_template_name, {})["mesh_file"] = file_path
+        self.set_tip("操作提示：STL 网格已加载，仅用于三维显示，不参与算法计算；点击“保存当前模板”可写入模板目录。")
+
+    def _load_mesh_file(self, path: Path) -> None:
+        mesh = read_stl_mesh(path)
+        if mesh is None:
+            self.set_result(f"检测结果：STL 网格文件为空或格式不支持 {path.name}")
+            return
+        vertices, faces = mesh
+        self.point_cloud_view.set_mesh(vertices, faces)
+        self.set_result(f"检测结果：已加载 STL 网格 {path.name}（{len(faces):,} 个三角面）")
+
+    def _clear_mesh(self) -> None:
+        self.point_cloud_view.clear_mesh()
+        if self.current_template_name:
+            self.templates.setdefault(self.current_template_name, {})["mesh_file"] = ""
+        self.set_tip("操作提示：STL 网格已清除。")
 
     def _load_point_cloud_file(self, path: Path) -> None:
         pcd = read_point_cloud(path)
@@ -846,6 +889,7 @@ class FlowPage(BasePage):
             {
                 "name": name,
                 "point_cloud_file": str(data.get("point_cloud_file", "")),
+                "mesh_file": str(data.get("mesh_file", "")),
                 "rois": self.roi_canvas.get_rois(),
                 "roi_image_size": roi_image_size,
             }
@@ -859,6 +903,7 @@ class FlowPage(BasePage):
             "name": data.get("name", name),
             "model_file": data.get("model_file", ""),
             "point_cloud_file": data.get("point_cloud_file", ""),
+            "mesh_file": data.get("mesh_file", ""),
             "rois": data.get("rois", []),
             "roi_image_size": data.get("roi_image_size", []),
             "detection": data.get("detection", {}),
@@ -875,6 +920,7 @@ class FlowPage(BasePage):
             {
                 "model_file": payload["model_file"],
                 "point_cloud_file": payload["point_cloud_file"],
+                "mesh_file": payload["mesh_file"],
             },
         )
         self.config_service.save_template_category(name, "Other Config", "other.yaml", {"other_params": payload["other_params"]})

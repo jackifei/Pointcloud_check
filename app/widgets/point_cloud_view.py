@@ -149,10 +149,13 @@ class PointCloudView(QOpenGLWidget):
         self._colors: np.ndarray | None = None
         self._selection_mask: np.ndarray | None = None
         self._plane: dict | None = None
+        self._mesh_vertices: np.ndarray | None = None
+        self._mesh_faces: np.ndarray | None = None
 
         self._gl_ready = False
         self._points_dirty = False
         self._plane_dirty = False
+        self._mesh_dirty = False
 
         self._yaw = 0.0
         self._pitch = 0.0
@@ -173,9 +176,12 @@ class PointCloudView(QOpenGLWidget):
         self._plane_program: QOpenGLShaderProgram | None = None
         self._point_vbo: QOpenGLBuffer | None = None
         self._plane_vbo: QOpenGLBuffer | None = None
+        self._mesh_vbo: QOpenGLBuffer | None = None
         self._gl = None
         self._point_count = 0
         self._plane_vertex_count = 0
+        self._mesh_vertex_count = 0
+        self._mesh_color = "#ffb347"
         self._show_axes = True
         self._axis_vbo: QOpenGLBuffer | None = None
         self._axis_dirty = True
@@ -220,14 +226,7 @@ class PointCloudView(QOpenGLWidget):
         self._points_dirty = True
         self._plane_dirty = True
 
-        lower = points.min(axis=0)
-        upper = points.max(axis=0)
-        self._bbox_center = (lower + upper) / 2.0
-        self._bbox_diag = float(np.linalg.norm(upper - lower)) or 1.0
-        self._dist = max(self._bbox_diag * 2.5, 1e-3)
-        self._pan = np.zeros(3, dtype=np.float64)
-        self._axis_length = max(self._bbox_diag * 0.5, 1e-3)
-        self._axis_dirty = True
+        self._update_view_bounds()
         self.update()
 
     def clear(self) -> None:
@@ -241,6 +240,58 @@ class PointCloudView(QOpenGLWidget):
 
     def has_cloud(self) -> bool:
         return self._points is not None and len(self._points) > 0
+
+    def set_mesh(self, vertices, faces) -> None:
+        """加载用于三维显示的 STL 网格（仅显示，不参与点云算法）。"""
+        if vertices is None or faces is None:
+            self.clear_mesh()
+            return
+        vertices = np.asarray(vertices, dtype=np.float64)
+        faces = np.asarray(faces, dtype=np.int32)
+        if vertices.ndim != 2 or vertices.shape[0] == 0 or vertices.shape[1] < 3:
+            self.clear_mesh()
+            return
+        if faces.ndim != 2 or faces.shape[0] == 0 or faces.shape[1] < 3:
+            self.clear_mesh()
+            return
+        self._mesh_vertices = vertices[:, :3]
+        self._mesh_faces = faces[:, :3]
+        self._mesh_dirty = True
+        self._update_view_bounds()
+        self.update()
+
+    def _update_view_bounds(self) -> None:
+        """按当前点云与网格的合并包围盒重新取景，保证两者都可见。"""
+        arrays = []
+        if self._points is not None and len(self._points) > 0:
+            arrays.append(self._points)
+        if self._mesh_vertices is not None and len(self._mesh_vertices) > 0:
+            arrays.append(self._mesh_vertices)
+        if not arrays:
+            return
+        combined = np.concatenate(arrays, axis=0)
+        lower = combined.min(axis=0)
+        upper = combined.max(axis=0)
+        self._bbox_center = (lower + upper) / 2.0
+        self._bbox_diag = float(np.linalg.norm(upper - lower)) or 1.0
+        self._dist = max(self._bbox_diag * 2.5, 1e-3)
+        self._pan = np.zeros(3, dtype=np.float64)
+        self._axis_length = max(self._bbox_diag * 0.5, 1e-3)
+        self._axis_dirty = True
+
+    def clear_mesh(self) -> None:
+        """清除三维显示中的 STL 网格。"""
+        self._mesh_vertices = None
+        self._mesh_faces = None
+        self._mesh_dirty = True
+        self.update()
+
+    def has_mesh(self) -> bool:
+        return (
+            self._mesh_vertices is not None
+            and self._mesh_faces is not None
+            and len(self._mesh_faces) > 0
+        )
 
     def selected_points(self) -> np.ndarray:
         if self._points is None or self._selection_mask is None:
@@ -338,15 +389,49 @@ class PointCloudView(QOpenGLWidget):
         self.update()
 
     def grab(self) -> QPixmap:
-        """返回当前三维画面的截图，用于 ROI 画布投影。"""
+        """返回当前三维画面的截图，用于 ROI 画布投影。
+
+        截图时临时隐藏 STL 网格：网格仅用于三维显示参考，
+        不进入 ROI 编辑底图。
+        """
         if self._gl_ready:
-            self._grab_mvp = self._current_mvp()
-            image = self.grabFramebuffer()
-            if image is not None and not image.isNull():
-                self._grab_width = image.width()
-                self._grab_height = image.height()
-                return QPixmap.fromImage(image)
+            saved_mesh = self._hide_mesh_for_grab()
+            try:
+                self._grab_mvp = self._current_mvp()
+                image = self.grabFramebuffer()
+                if image is not None and not image.isNull():
+                    self._grab_width = image.width()
+                    self._grab_height = image.height()
+                    return QPixmap.fromImage(image)
+            finally:
+                self._restore_mesh_for_grab(saved_mesh)
         return super().grab()
+
+    def _hide_mesh_for_grab(self):
+        """临时隐藏网格，返回恢复所需的状态；无网格时返回 None。"""
+        if not self.has_mesh():
+            return None
+        saved = (
+            self._mesh_vertices,
+            self._mesh_faces,
+            self._mesh_dirty,
+            self._mesh_vertex_count,
+        )
+        self._mesh_vertices = None
+        self._mesh_faces = None
+        self._mesh_dirty = True
+        self._mesh_vertex_count = 0
+        return saved
+
+    def _restore_mesh_for_grab(self, saved) -> None:
+        if saved is None:
+            return
+        (
+            self._mesh_vertices,
+            self._mesh_faces,
+            self._mesh_dirty,
+            self._mesh_vertex_count,
+        ) = saved
 
     # ------------------------------------------------------------------ OpenGL 生命周期
 
@@ -369,6 +454,8 @@ class PointCloudView(QOpenGLWidget):
         self._point_vbo.create()
         self._plane_vbo = QOpenGLBuffer(QOpenGLBuffer.Type.VertexBuffer)
         self._plane_vbo.create()
+        self._mesh_vbo = QOpenGLBuffer(QOpenGLBuffer.Type.VertexBuffer)
+        self._mesh_vbo.create()
         self._axis_vbo = QOpenGLBuffer(QOpenGLBuffer.Type.VertexBuffer)
         self._axis_vbo.create()
 
@@ -407,6 +494,10 @@ class PointCloudView(QOpenGLWidget):
         if self.has_cloud():
             self._upload_points_if_needed()
             self._draw_points(mvp)
+
+        if self.has_mesh():
+            self._upload_mesh_if_needed()
+            self._draw_mesh(mvp)
 
         if self._plane is not None:
             self._upload_plane_if_needed()
@@ -496,6 +587,52 @@ class PointCloudView(QOpenGLWidget):
         program.disableAttributeArray(1)
         program.disableAttributeArray(0)
         self._point_vbo.release()
+        program.release()
+
+    def _upload_mesh_if_needed(self) -> None:
+        if not self._mesh_dirty:
+            return
+        self._mesh_dirty = False
+        if not self.has_mesh():
+            self._mesh_vertex_count = 0
+            return
+        line_vertices = self._mesh_line_vertices()
+        self._upload_vbo(self._mesh_vbo, line_vertices)
+        self._mesh_vertex_count = line_vertices.shape[0]
+
+    def _mesh_line_vertices(self) -> np.ndarray:
+        """把三角面转为线框顶点序列（每条边两个端点，去重后交错排列）。"""
+        faces = self._mesh_faces
+        vertices = self._mesh_vertices
+        edges = np.concatenate(
+            [
+                faces[:, [0, 1]],
+                faces[:, [1, 2]],
+                faces[:, [2, 0]],
+            ]
+        )
+        edges = np.sort(edges, axis=1)
+        edges = np.unique(edges, axis=0)
+        line_vertices = np.empty((edges.shape[0] * 2, 3), dtype=np.float64)
+        line_vertices[0::2] = vertices[edges[:, 0]]
+        line_vertices[1::2] = vertices[edges[:, 1]]
+        return line_vertices
+
+    def _draw_mesh(self, mvp: np.ndarray) -> None:
+        if self._mesh_vertex_count == 0 or self._plane_program is None or self._mesh_vbo is None:
+            return
+        program = self._plane_program
+        program.bind()
+        program.setUniformValue("uMVP", _to_qmatrix(mvp))
+        rgba = _hex_to_rgba(self._mesh_color, alpha=1.0)
+        program.setUniformValue("uColor", rgba[0], rgba[1], rgba[2], rgba[3])
+        self._mesh_vbo.bind()
+        program.enableAttributeArray(0)
+        program.setAttributeBuffer(0, GL_FLOAT, 0, 3, 3 * 4)
+        self._gl.glLineWidth(1.5)
+        self._gl.glDrawArrays(GL_LINES, 0, self._mesh_vertex_count)
+        program.disableAttributeArray(0)
+        self._mesh_vbo.release()
         program.release()
 
     def _upload_plane_if_needed(self) -> None:

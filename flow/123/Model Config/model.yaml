@@ -1,2 +1,3 @@
 model_file: ''
-point_cloud_file: C:/Users/skate/Desktop/LJS3Dpointcloud/cloud/Mesh2.ply
+point_cloud_file: E:/codex_pj/LJ640pointcloud/wheel/250528_171651.pcd
+mesh_file: E:/codex_pj/LJ640pointcloud/wheel.STL
