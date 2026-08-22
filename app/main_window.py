@@ -49,7 +49,7 @@ NAV_ITEMS = [
 class MainWindow(QMainWindow):
     def __init__(self) -> None:
         super().__init__()
-        self.setWindowTitle("单检测工位框架")
+        self.setWindowTitle("三维视觉检测")
         self.resize(1440, 860)
         self.setMinimumSize(1100, 700)
 
@@ -116,7 +116,7 @@ class MainWindow(QMainWindow):
         layout.setContentsMargins(10, 0, 10, 0)
         layout.setSpacing(2)
 
-        app_title = QLabel("WS")
+        app_title = QLabel("WS3D")
         app_title.setObjectName("navAppTitle")
         layout.addWidget(app_title)
         layout.addSpacing(12)

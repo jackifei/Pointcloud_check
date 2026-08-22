@@ -1,25 +1,50 @@
 name: '123'
 model_file: ''
-point_cloud_file: ''
+point_cloud_file: C:/Users/skate/Desktop/LJS3Dpointcloud/cloud/Mesh2.ply
 rois:
-- name: ROI-5
-  shape: rect
-  cx: 209.921875
-  cy: 137.08984375
-  w: 160.0
-  h: 120.0
-  angle: 0.0
-- name: ROI-6
-  shape: circle
-  cx: 189.14453125
-  cy: 326.359375
-  radius: 60.0
+- name: 多边形-1
+  shape: polygon
+  points:
+  - - 672.2326528618888
+    - 467.5789217186167
+  - - 782.7443873315135
+    - 478.9606348501731
+  - - 840.7909549317205
+    - 439.8359959604477
+  - - 808.4188306931435
+    - 343.09143434221755
+  - - 769.3490255776197
+    - 291.87372525021334
+  - - 699.0233763696766
+    - 325.3075075741605
+  - - 657.7210109618369
+    - 378.65928787833155
+  - - 684.5117344696248
+    - 403.5567853536114
+- name: 多边形-2
+  shape: polygon
+  points:
+  - - 573.0056465294034
+    - 498.4409935890614
+  - - 633.1640315004964
+    - 504.90429114793915
+  - - 637.638622118181
+    - 466.1245057946726
+  - - 552.6214003821735
+    - 449.717673529829
+  - - 550.6326934409803
+    - 493.9664029713768
+  - - 563.0621118234376
+    - 502.9155842067461
+roi_image_size:
+- 1148
+- 800
 detection:
-  confidence: 0.5
+  confidence: 0.4
   detection_count: 20
-  spare_1: ''
-  spare_2: ''
-  spare_3: ''
+  spare_1: '1'
+  spare_2: '2'
+  spare_3: '3'
   enable_1: true
   enable_2: true
   enable_3: false
@@ -28,7 +53,7 @@ detection:
   function_1: 功能1
   function_2: 功能2
   function_3: 功能3
-  function_4: 功能3
+  function_4: 功能4
   function_5: 功能5
 other_params:
 - name: '11'
