@@ -1,11 +1,11 @@
 {
-  "ok": 0,
+  "ok": 1,
   "ng": 0,
-  "day": 0,
-  "week": 46,
-  "month": 46,
-  "last_ok_reset": "2026-08-21",
-  "last_day_reset": "2026-08-21",
+  "day": 1,
+  "week": 47,
+  "month": 47,
+  "last_ok_reset": "2026-08-22",
+  "last_day_reset": "2026-08-22",
   "last_week_reset": "2026-08-17",
   "last_month_reset": "2026-08-01"
 }

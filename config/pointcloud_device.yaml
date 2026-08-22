@@ -1,0 +1,7 @@
+device_type: 文件点云设备
+device: ''
+voxel_enabled: true
+voxel_size: 0.01
+outlier_enabled: false
+nb_neighbors: 20
+std_ratio: 2.0
